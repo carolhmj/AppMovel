@@ -127,7 +127,7 @@ public class ARViewer implements ApplicationListener {
             Gdx.app.error("minp", String.valueOf(minp));
             Gdx.app.error("maxr", String.valueOf(maxr));
             Gdx.app.error("minr", String.valueOf(minr));
-            cam.position.set(3, 0, 3);
+            cam.position.set(3, 0, -3);
             init = false;
         }
 
@@ -175,7 +175,7 @@ public class ARViewer implements ApplicationListener {
     @Override
     public void dispose() {
         modelBatch.dispose();
-        model.dispose();
+//        model.dispose();
     }
 
     @Override

@@ -88,12 +88,19 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
         return c; // returns null if camera is unavailable
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mCamera.stopPreview();
-        mCamera.release();
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        mCamera.startPreview();
+//        mCamera.release();
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        mCamera.stopPreview();
+//        mCamera.release();
+//    }
 
     @Override
     public void onLocationChanged(Location location) {
@@ -110,12 +117,12 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
         float distance = dist[0];
         lat = lat - lat_obj;
         lon = lon - lon_obj;
-        float xcoord=(float)((distance*lat)/(lat+lon));
-        float ycoord=(float)((distance*lon)/(lat+lon));
+        float xcoord = (float) ((distance * lon) / (lat + lon));
+        float ycoord = (float) ((distance * lat) / (lat + lon));
 
-        arViewer.setCamCoord(xcoord,ycoord);
+        arViewer.setCamCoord(xcoord, ycoord);
         Log.e(TAG, "distance: " + dist[0]);
-        Log.e(TAG, "x,y: " + xcoord+" , "+ycoord);
+        //Log.e(TAG, "x,y: " + xcoord + " , " + ycoord);
     }
 
     @Override
