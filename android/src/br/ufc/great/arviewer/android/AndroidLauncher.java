@@ -1,6 +1,9 @@
 package br.ufc.great.arviewer.android;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
@@ -25,16 +28,27 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
     private Camera mCamera;
     private CameraPreview mCameraPreview;
     private View libgdxView;
-    final double lat_obj = -3.73422104;
-    final double lon_obj = -38.5482861;
+    final double lat_obj = -3.745896;
+    final double lon_obj = -38.574405;
     private ARViewer arViewer;
+    ProgressDialog progressDialog;
+    LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-//		initialize(new ARViewer(), config);
         setContentView(R.layout.activity_main);
+
+        Intent intent = getIntent();
+        String parameter =  intent.getExtras().getString("parameter");
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(parameter).create().show();
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Aguarde enquando o GPS atualiza a posicao...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
         cfg.r = 8;
@@ -63,11 +77,17 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
 
         AcelerometerListener acelerometerListener = new AcelerometerListener(this, arViewer);
         acelerometerListener.startMonitoring();
+
         GiroscopeListener giroscopeListener = new GiroscopeListener(this, arViewer);
         giroscopeListener.startMonitoring();
 
-                ((LocationManager) getSystemService(Context.LOCATION_SERVICE)).requestLocationUpdates(
-                LocationManager.GPS_PROVIDER, 100, 0.01f, this);
+        locationManager = ((LocationManager) getSystemService(Context.LOCATION_SERVICE));
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 0.01f, this);
+
+        Location savedLocation = Armazenamento.resgatarUltimaLocalizacao(this);
+        if (savedLocation != null) {
+            onLocationChanged(savedLocation);
+        }
     }
 
     /**
@@ -89,26 +109,17 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
             c = Camera.open(); // attempt to get a Camera instance
         } catch (Exception e) {
             // Camera is not available (in use or does not exist)
+            e.printStackTrace();
         }
         return c; // returns null if camera is unavailable
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        mCamera.startPreview();
-//        mCamera.release();
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        mCamera.stopPreview();
-//        mCamera.release();
-//    }
-
     @Override
     public void onLocationChanged(Location location) {
+
+        progressDialog.dismiss();
+        Armazenamento.salvarLocalizacao(location, this);
+
         Log.e(TAG, "latitude: " + location.getLatitude()
                 + " , longitude: " + location.getLongitude() + " , altitude: "
                 + location.getAltitude());
@@ -120,14 +131,16 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
 
         Location.distanceBetween(lat, lon, lat_obj, lon_obj, dist);
         float distance = dist[0];
-        lat = lat - lat_obj;
-        lon = lon - lon_obj;
-        float xcoord = (float) ((distance * lon) / (lat + lon));
-        float ycoord = (float) ((distance * lat) / (lat + lon));
+        lat = lat_obj - lat;
+        lon = lon_obj - lon;
+        float xcoord = (float) (lat / 0.000009);
+        float zcoord = (float) (lon / 0.000009);
 
-        arViewer.setCamCoord(xcoord, ycoord);
+
+        arViewer.setCamCoord(xcoord, zcoord, location.getAltitude());
         Log.e(TAG, "distance: " + dist[0]);
         //Log.e(TAG, "x,y: " + xcoord + " , " + ycoord);
+
     }
 
     @Override

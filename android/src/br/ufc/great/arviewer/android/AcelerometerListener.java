@@ -37,7 +37,6 @@ public class AcelerometerListener implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
             arViewer.setAccelerometerValues(sensorEvent.values);
-
     }
 
     @Override
