@@ -61,7 +61,12 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
             finish();
         }
 
-        ((LocationManager) getSystemService(Context.LOCATION_SERVICE)).requestLocationUpdates(
+        AcelerometerListener acelerometerListener = new AcelerometerListener(this, arViewer);
+        acelerometerListener.startMonitoring();
+        GiroscopeListener giroscopeListener = new GiroscopeListener(this, arViewer);
+        giroscopeListener.startMonitoring();
+
+                ((LocationManager) getSystemService(Context.LOCATION_SERVICE)).requestLocationUpdates(
                 LocationManager.GPS_PROVIDER, 100, 0.01f, this);
     }
 

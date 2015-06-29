@@ -14,6 +14,8 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
+import java.text.DecimalFormat;
+
 public class ARViewer implements ApplicationListener {
     public Environment environment;
     public PerspectiveCamera cam;
@@ -34,6 +36,7 @@ public class ARViewer implements ApplicationListener {
     float xcam, ycam;
     float coordAlpha = 2f;
 
+
     @Override
     public void create() {
         environment = new Environment();
@@ -43,8 +46,8 @@ public class ARViewer implements ApplicationListener {
         modelBatch = new ModelBatch();
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//        cam.position.set(3f, 0, 0);
-        cam.position.set(2f, 0, 0);
+//      cam.position.set(3f, 0, 0);
+        cam.position.set(2f, 0, 0); //Position : posição da camera no plano
         cam.lookAt(0, 0, 0);
         cam.near = 0.001f;
         cam.far = 300f;
@@ -76,7 +79,8 @@ public class ARViewer implements ApplicationListener {
     @Override
     public void render() {
 
-//        camController.update();
+//
+// camController.update();
         if (loading && assets.update())
             doneLoading();
 
@@ -93,13 +97,13 @@ public class ARViewer implements ApplicationListener {
         float devPitch = Gdx.input.getPitch();
         float devRoll = Gdx.input.getRoll();
 
-        if (devAzimuth > maxa) maxa = devAzimuth;
-        if (devPitch > maxp) maxp = devPitch;
-        if (devRoll > maxr) maxr = devRoll;
-
-        if (devAzimuth < mina) mina = devAzimuth;
-        if (devPitch < minp) minp = devPitch;
-        if (devRoll < minr) minr = devRoll;
+//        if (devAzimuth > maxa) maxa = devAzimuth;
+//        if (devPitch > maxp) maxp = devPitch;
+//        if (devRoll > maxr) maxr = devRoll;
+//
+//        if (devAzimuth < mina) mina = devAzimuth;
+//        if (devPitch < minp) minp = devPitch;
+//        if (devRoll < minr) minr = devRoll;
 
 //        if (init) {
 //            Gdx.app.error("init", " apr ");
@@ -118,25 +122,26 @@ public class ARViewer implements ApplicationListener {
 //        devPitch = pitch + 0.01f * (pitch - devPitch);
 //        devRoll = roll + 0.01f * (roll - devRoll);
 
-        if (Gdx.input.justTouched()) {
-            //init = true;
-            Gdx.app.error("azimuth - pitch - roll: ", String.valueOf(azimuth) + " | " + String.valueOf(pitch) + " | " + String.valueOf(roll));
-            Gdx.app.error("maxa", String.valueOf(maxa));
-            Gdx.app.error("mina", String.valueOf(mina));
-            Gdx.app.error("maxp", String.valueOf(maxp));
-            Gdx.app.error("minp", String.valueOf(minp));
-            Gdx.app.error("maxr", String.valueOf(maxr));
-            Gdx.app.error("minr", String.valueOf(minr));
-            cam.position.set(3, 0, -3);
-            init = false;
-        }
+//        if (Gdx.input.justTouched()) {
+//            //init = true;
+//            Gdx.app.error("azimuth - pitch - roll: ", String.valueOf(azimuth) + " | " + String.valueOf(pitch) + " | " + String.valueOf(roll));
+//            Gdx.app.error("maxa", String.valueOf(maxa));
+//            Gdx.app.error("mina", String.valueOf(mina));
+//            Gdx.app.error("maxp", String.valueOf(maxp));
+//            Gdx.app.error("minp", String.valueOf(minp));
+//            Gdx.app.error("maxr", String.valueOf(maxr));
+//            Gdx.app.error("minr", String.valueOf(minr));
+//            cam.position.set(3, 0, -3);
+//            init = false;
+//        }
 
-        cam.direction.x = -1;
-        cam.direction.y = 0;
-        cam.direction.z = 0;
-        cam.up.x = 0;
-        cam.up.y = 0;
-        cam.up.z = -1;
+//        cam.direction.x = -1;
+//       cam.direction.y = 0;
+//        cam.direction.z = 0;
+//
+        cam.up.x = 0;//azimuth
+        cam.up.y = 1;
+        cam.up.z = 0;
 
 //        azimuth = devAzimuth;
 //        pitch = devPitch;
@@ -153,11 +158,16 @@ public class ARViewer implements ApplicationListener {
         //cam.rotate(devRoll, 0, 1, 0);//roll
 
         //Vector3 look = new Vector3(pitch, azimuth, (roll - 90));
-        Vector3 look = new Vector3(0, 0, 0);
-        if (init) {
-            cam.position.set(xcam / coordAlpha, 0, ycam / coordAlpha);
-            Gdx.app.error("Arviewer", "x,y: " + xcam / coordAlpha + " , " + ycam / coordAlpha);
-        }
+
+
+        Vector3 look = new Vector3(-giroscopeY, giroscopeX, 0);
+
+        cam.position.set(0, 0, 3);// localizacao
+
+       // cam.position.rotate(60, -acelerometerX, -acelerometerY, 0);
+
+        Gdx.app.error("Arviewer", "x,y: " + xcam / coordAlpha + " , " + ycam / coordAlpha);
+
         cam.lookAt(look);
         cam.update();
 
@@ -171,6 +181,30 @@ public class ARViewer implements ApplicationListener {
         ycam = y;
     }
 
+    float acelerometerX, acelerometerY, acelerometerZ;
+    float giroscopeX = 0, giroscopeY = 0, giroscopeZ = 0;
+
+    public void setAccelerometerValues(float[] values) {
+        acelerometerX = values[0];
+        acelerometerY = values[1];
+        acelerometerZ = values[2];
+    }
+
+    public void setGiroscopeValues(float[] values) {
+
+
+        giroscopeX = giroscopeX + truncateValue(values[0]);
+        giroscopeY = giroscopeY + truncateValue(values[1]);
+        giroscopeZ = giroscopeZ + truncateValue(values[2]);
+        Gdx.app.error("giroscopio valores", "X: " + truncateValue(values[0]) + " Y: " + truncateValue(values[1]) + " Z: " + truncateValue(values[2]));
+        Gdx.app.error("Objeto valores", "X: " + giroscopeX + " Y: " + giroscopeY + " Z: " + giroscopeZ);
+    }
+
+
+    private float truncateValue(float value){
+        int aux = (int)(value*10);
+        return aux/10f;
+    }
 
     @Override
     public void dispose() {
