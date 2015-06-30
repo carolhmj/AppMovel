@@ -11,6 +11,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
@@ -18,6 +19,8 @@ import android.widget.FrameLayout;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+
+import java.io.File;
 
 import br.ufc.great.arviewer.ARViewer;
 
@@ -39,11 +42,8 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = getIntent();
-        String parameter =  intent.getExtras().getString("parameter");
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(parameter).create().show();
+        //Intent intent = getIntent();
+        //String nome_objeto =  intent.getExtras().getString("NOME_OBJETO");
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Aguarde enquando o GPS atualiza a posicao...");
@@ -55,7 +55,16 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
         cfg.g = 8;
         cfg.b = 8;
         cfg.a = 8;
-        arViewer = new ARViewer();
+
+
+        File arquivo =  new File(Environment.getExternalStorageDirectory()+"/GreatPervasiveGame/ship.obj");
+
+        if (arquivo.exists()){
+            Log.e("File","Existe");
+        }
+
+        arViewer = new ARViewer(arquivo);
+
         libgdxView = initializeForView(arViewer, cfg);
 
         if (libgdxView instanceof SurfaceView) {

@@ -35,7 +35,7 @@ public class GiroscopeListener implements SensorEventListener {
     }
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        arViewer.setGiroscopeValues(sensorEvent.values);
+        arViewer.setGiroscopeValues(sensorEvent.values, sensorEvent.timestamp);
     }
 
     @Override
