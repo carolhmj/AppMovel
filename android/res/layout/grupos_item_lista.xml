@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:src="@drawable/ic_action_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/grupos_item_lista_nome"
+            android:layout_width="match_parent"
+            android:textSize="@dimen/texto_medio"
+            android:layout_gravity="center"
+            android:text="nome"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+</LinearLayout>

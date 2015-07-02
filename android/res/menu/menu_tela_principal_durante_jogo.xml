@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="br.great.jogopervasivo.actvititesDoJogo.TelaPrincipalActivity">
+
+
+    <item
+        android:id="@+id/menuMissoes"
+        android:title="@string/missoes"
+        android:icon="@drawable/ic_action_missoes"
+        android:showAsAction="ifRoom|withText" />
+
+
+
+    <item
+        android:title="@string/mais_opcoes"
+        android:showAsAction="always|withText"
+        android:icon="@android:drawable/ic_menu_sort_by_size">
+        <menu>
+            <item
+                android:id="@+id/menuChat"
+                android:title="@string/chat"
+                android:icon="@drawable/ic_action_chat"
+                android:showAsAction="never|withText" />
+            <item
+                android:id="@+id/sairDoJogo"
+                android:title="@string/sair_do_jogo"
+                android:icon="@android:drawable/ic_delete"
+                android:showAsAction="never|withText" />
+        </menu>
+    </item>
+</menu>

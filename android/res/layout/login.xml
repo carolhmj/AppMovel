@@ -1,0 +1,81 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/margem_bg_horizontal"
+    android:paddingRight="@dimen/margem_bg_horizontal"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".LoginActivity"
+    android:background="@mipmap/bg_home">
+
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_weight="2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <EditText
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:id="@+id/login_login"
+            android:textSize="@dimen/texto_grande"
+            android:inputType="textEmailAddress"
+            android:layout_width="match_parent"
+            android:hint="@string/login"
+            android:layout_height="wrap_content"
+            android:text="a"/>
+
+
+
+        <EditText
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:id="@+id/login_senha"
+            android:textSize="@dimen/texto_grande"
+            android:inputType="textPassword"
+            android:hint="@string/senha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="a"
+            />
+        <Button
+            android:id="@+id/login_botao"
+            android:text="@string/entrar"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:textSize="@dimen/texto_grande"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/common_signin_btn_dark_text_default"/>
+
+        <TextView
+            android:id="@+id/login_nova_conta"
+            android:text="@string/ainda_nao_cadastrado"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:textSize="@dimen/texto_medio"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@android:color/holo_blue_dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/login_configuracoes"
+            android:text="@string/action_settings"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:textSize="@dimen/texto_medio"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@android:color/holo_blue_dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

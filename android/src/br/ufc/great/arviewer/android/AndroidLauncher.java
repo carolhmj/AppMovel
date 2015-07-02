@@ -1,6 +1,5 @@
 package br.ufc.great.arviewer.android;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -31,8 +30,8 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
     private Camera mCamera;
     private CameraPreview mCameraPreview;
     private View libgdxView;
-    final double lat_obj = -3.745896;
-    final double lon_obj = -38.574405;
+    double lat_obj = -3.745896;
+    double lon_obj = -38.574405;
     private ARViewer arViewer;
     ProgressDialog progressDialog;
     LocationManager locationManager;
@@ -42,8 +41,13 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Intent intent = getIntent();
-        //String nome_objeto =  intent.getExtras().getString("NOME_OBJETO");
+        Intent intent = getIntent();
+        String nome_objeto = intent.getExtras().getString("NOME_OBJETO");
+        String nome_textura = intent.getExtras().getString("NOME_TEXTURA");
+        lat_obj = intent.getExtras().getDouble("LAT_OBJETO");
+        lon_obj = intent.getExtras().getDouble("LON_OBJETO");
+        double lat_jogador = intent.getExtras().getDouble("LAT_JOGADOR");
+        double lon_jogador = intent.getExtras().getDouble("LON_JOGADOR");
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Aguarde enquando o GPS atualiza a posicao...");
@@ -57,13 +61,13 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
         cfg.a = 8;
 
 
-        File arquivo =  new File(Environment.getExternalStorageDirectory()+"/GreatPervasiveGame/ship.obj");
+        File arquivo = new File(Environment.getExternalStorageDirectory() + "/GreatPervasiveGame/"+nome_objeto);
 
-        if (arquivo.exists()){
-            Log.e("File","Existe");
+        if (arquivo.exists()) {
+            Log.e("File", "Existe");
         }
 
-        arViewer = new ARViewer(arquivo);
+        arViewer = new ARViewer(arquivo, nome_objeto, nome_textura);
 
         libgdxView = initializeForView(arViewer, cfg);
 
@@ -93,10 +97,14 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
         locationManager = ((LocationManager) getSystemService(Context.LOCATION_SERVICE));
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 0.01f, this);
 
-        Location savedLocation = Armazenamento.resgatarUltimaLocalizacao(this);
-        if (savedLocation != null) {
-            onLocationChanged(savedLocation);
-        }
+        onLocationChanged(generateLocation(lat_jogador,lon_jogador));
+    }
+
+    public Location generateLocation(double lat, double lon) {
+        Location l = new Location(LocationManager.GPS_PROVIDER);
+        l.setLatitude(lat);
+        l.setLongitude(lon);
+        return l;
     }
 
     /**
@@ -165,5 +173,12 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mCamera.stopPreview();
+        mCamera.release();
     }
 }

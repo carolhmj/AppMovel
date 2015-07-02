@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="br.great.jogopervasivo.actvititesDoJogo.InstanciasExecutandoActivity">
+    <item
+        android:id="@+id/instancias_executando_novo_jogo"
+        android:title="@string/novo_jogo"
+        android:icon="@drawable/ic_action_new"
+        android:showAsAction="always|withText" />
+</menu>

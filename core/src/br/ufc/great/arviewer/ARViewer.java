@@ -5,11 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
-
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -62,8 +60,13 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
     ObjLoader objLoader;
     FileHandle fileHandle;
 
-    public ARViewer(File file) {
+    String nomeDoObjeto;
+    String nomeDaTextura;
+
+    public ARViewer(File file, String nomeDoObjeto, String nomeDaTextura) {
         this.objeto = file;
+        this.nomeDoObjeto = nomeDoObjeto;
+        this.nomeDaTextura = nomeDaTextura;
     }
 
     @Override
@@ -76,7 +79,7 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
         modelBatch = new ModelBatch();
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.position.set(0 , 0, 0); //Position : posicao da camera no plano
+        cam.position.set(0, 0, 0); //Position : posicao da camera no plano
         cam.lookAt(0, 0, 0);
         cam.near = 0.001f;
         cam.far = 300f;
@@ -102,11 +105,10 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
     }
 
 
-
     private void doneLoading() {
         TextureProvider textureProvider = new FileTextureProviderExterna();
-        textureProvider.load("GreatPervasiveGame/ship.png");
-        Model model = objLoader.loadModel(Gdx.files.external("GreatPervasiveGame/ship.obj"), textureProvider);
+        textureProvider.load("GreatPervasiveGame/" + nomeDaTextura);
+        Model model = objLoader.loadModel(Gdx.files.external("GreatPervasiveGame/" + nomeDoObjeto), textureProvider);
         String id = model.nodes.get(0).id;
         GameObject gameObject = new GameObject(model, id, true);
         instances.add(gameObject);
@@ -179,14 +181,14 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
         acelerometerX = values[0];
         acelerometerY = values[1];
         acelerometerZ = values[2];
-    }
 
+    }
 
 
     private static final float NS2S = 1.0f / 1000000000.0f;
     private final float[] deltaRotationVector = new float[4];
     private float timestamp;
-    float EPSILON= 0;
+    float EPSILON = 0;
 
     public void setGiroscopeValues(float[] values, float eventTimestamp) {
 
@@ -198,7 +200,7 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
             float axisZ = values[2];
 
             // Calculate the angular speed of the sample
-            float omegaMagnitude = (float) Math.sqrt(axisX*axisX + axisY*axisY + axisZ*axisZ);
+            float omegaMagnitude = (float) Math.sqrt(axisX * axisX + axisY * axisY + axisZ * axisZ);
 
             // Normalize the rotation vector if it's big enough to get the axis
             // (that is, EPSILON should represent your maximum allowable margin of error)
@@ -213,14 +215,14 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
             // We will convert this axis-angle representation of the delta rotation
             // into a quaternion before turning it into the rotation matrix.
             float thetaOverTwo = omegaMagnitude * dT / 2.0f;
-            float sinThetaOverTwo = (float)Math.sin(thetaOverTwo);
-            float cosThetaOverTwo = (float)Math.cos(thetaOverTwo);
+            float sinThetaOverTwo = (float) Math.sin(thetaOverTwo);
+            float cosThetaOverTwo = (float) Math.cos(thetaOverTwo);
             deltaRotationVector[0] = sinThetaOverTwo * axisX;
             deltaRotationVector[1] = sinThetaOverTwo * axisY;
             deltaRotationVector[2] = sinThetaOverTwo * axisZ;
             deltaRotationVector[3] = cosThetaOverTwo;
 
-            Quaternion quaternion = new Quaternion(deltaRotationVector[0],deltaRotationVector[1],deltaRotationVector[2],deltaRotationVector[3]);
+            Quaternion quaternion = new Quaternion(deltaRotationVector[0], deltaRotationVector[1], deltaRotationVector[2], deltaRotationVector[3]);
             cam.rotate(quaternion);
         }
 
@@ -236,8 +238,6 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
 //            drawLineOnLogCat();
 //        }
     }
-
-
 
 
     private float truncateValue(float value) {
@@ -282,33 +282,29 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
         return result;
     }
 
-//    //evento chamado quando toca a tela
-//    @Override
-//    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-//        Gdx.app.error("colisao1", "objeto " + selecting);
-//        selecting = getObject(screenX, screenY);
-//        Gdx.app.error("colisao1", "objeto " + selecting);
-//
-//        return selecting >= 0;
-//    }
-//
-//    //nunca eh chamado
-//    @Override
-//    public boolean touchDragged(int screenX, int screenY, int pointer) {
-//        Gdx.app.error("colisao2", "objeto " + selecting);
-//        return selecting >= 0;
-//    }
-//
-//    //evento chamado quando toca a tela
-//    @Override
-//    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-//        if (selecting >= 0) {
-//            if (selecting == getObject(screenX, screenY))
-//                Gdx.app.error("colisao3", "objeto " + selecting);
-//            selecting = -1;
-//            return true;
-//        }
-//        Gdx.app.error("colisao4", "objeto " + selecting);
-//        return false;
-//    }
+    //evento chamado quando toca a tela
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        Gdx.app.error("colisao1", "objeto " + selecting);
+        selecting = getObject(screenX, screenY);
+        Gdx.app.error("colisao1", "objeto " + selecting);
+        return selecting >= 0;
+    }
+
+
+    //evento chamado quando toca a tela
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if (selecting >= 0) {
+            if (selecting == getObject(screenX, screenY)) {
+                Gdx.app.error("colisao3", "objeto " + selecting);
+                Gdx.app.exit();
+            }
+            selecting = -1;
+            return true;
+        }
+        Gdx.app.error("colisao4", "objeto " + selecting);
+
+        return false;
+    }
 }

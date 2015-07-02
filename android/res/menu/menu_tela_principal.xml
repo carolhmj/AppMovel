@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="br.great.jogopervasivo.actvititesDoJogo.TelaPrincipalActivity">
+    <item
+        android:id="@+id/menuNovoJogo"
+        android:title="@string/jogos_disponiveis"
+        android:icon="@drawable/ic_action_joystick"
+        android:showAsAction="always|withText" />
+</menu>

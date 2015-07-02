@@ -1,0 +1,49 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="br.great.jogopervasivo.actvititesDoJogo.NovoUsuarioActivity">
+
+
+
+    <EditText
+        android:id="@+id/novo_usuario_login"
+        android:textSize="@dimen/texto_grande"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:hint="@string/login"
+        android:layout_height="wrap_content" />
+
+
+
+    <EditText
+        android:id="@+id/novo_usuario_senha"
+        android:hint="@string/senha"
+        android:inputType="textPassword"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:textSize="@dimen/texto_grande"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <EditText
+        android:id="@+id/novo_usuario_senha2"
+        android:hint="@string/senha2"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:textSize="@dimen/texto_grande"
+        android:inputType="textPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/novo_usuario_botao"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/novo_usuario"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>
