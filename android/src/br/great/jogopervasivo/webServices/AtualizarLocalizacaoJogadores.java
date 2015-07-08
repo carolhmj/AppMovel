@@ -105,12 +105,16 @@ public class AtualizarLocalizacaoJogadores implements Runnable {
 
                                 InformacoesTemporarias.contextoTelaPrincipal.adicionarMarcadoresOutrosPlayers();
 
+
                                 for (int index = 0; index < informacoesAdicionaisJsonArray.length(); index++) {
                                     if (informacoesAdicionaisJsonArray.getJSONObject(index).getInt("jogador_id") == jogador.getId()) {
                                         jogador.setVida(informacoesAdicionaisJsonArray.getJSONObject(index).getInt("vida"));
                                     }
+                                    if (informacoesAdicionaisJsonArray.getJSONObject(index).getInt("jogador_id") == InformacoesTemporarias.idJogador){
+                                        InformacoesTemporarias.life = Integer.toString(informacoesAdicionaisJsonArray.getJSONObject(index).getInt("vida"));
+                                    }
                                 }
-
+                                TelaPrincipalActivity.atualizarVida();
                                 jogador.setGrupo(grupo);
                                 jogadores.add(jogador);
                             }

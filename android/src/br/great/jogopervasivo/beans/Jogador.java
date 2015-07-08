@@ -29,6 +29,7 @@ public class Jogador {
     public static final int TIPO_NEUTRO = 0;
     public static final int TIPO_CAPTURAVEL = 1;
     public static final int TIPO_CAPTURADOR = 2;
+    public static final int TIPO_HIBRIDO = 3;
 
     @Expose
     private String nome;
@@ -124,7 +125,7 @@ public class Jogador {
                     builder.create().show();
                     ((TelaPrincipalActivity) context).diminuirOpacidadeMarcador(getNome());
                 } else {
-                    Toast.makeText(context.getApplicationContext(), R.string.falha_de_conexao, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context.getApplicationContext(), R.string.nao_pode_capturar_jogador, Toast.LENGTH_LONG).show();
                 }
             }
         }.execute();

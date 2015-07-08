@@ -3,6 +3,7 @@ package br.great.jogopervasivo.gcmUtil;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -23,8 +24,9 @@ import br.great.jogopervasivo.webServices.Servidor;
 
 /**
  * Created by messiaslima on 02/02/2015.
+ *
  * @author messiaslima
- * version 2.0
+ *         version 2.0
  */
 
 public class InicializarGCM {
@@ -48,14 +50,16 @@ public class InicializarGCM {
             gcm = GoogleCloudMessaging.getInstance(activity);
             String registroSalvo = Armazenamento.resgatarRegistroDoDispositivo(activity);
             if (registroSalvo.trim().length() == 0) {
-                Log.i(Constantes.TAG,"Sem registro salvo");
+                Log.i(Constantes.TAG, "Sem registro salvo");
                 registrarDispositivo();
             } else {
                 if (!registroSalvo.equals(registroRecebido)) {
-                    Log.i(Constantes.TAG,"Registro recebido do servidor é diferente \n o registro salvo é: "+ registroSalvo);
+                    Log.i(Constantes.TAG, "Registro recebido do servidor é diferente \n o registro salvo é: " + registroSalvo);
                     registrarDispositivo();
                 }
             }
+        }else{
+
         }
     }
 
@@ -81,8 +85,8 @@ public class InicializarGCM {
                         jsonObject.put("acao", 5);
                         jsonObject2.put("jogador_id", InformacoesTemporarias.idJogador);
                         jsonObject2.put("idDispositivo", registroAtual);
-                        jsonArray.put(0,jsonObject);
-                        jsonArray.put(1,jsonObject2);
+                        jsonArray.put(0, jsonObject);
+                        jsonArray.put(1, jsonObject2);
                     } catch (JSONException je) {
                         je.printStackTrace();
                     }
@@ -101,10 +105,10 @@ public class InicializarGCM {
      * Verifica se o playservices esta instalado
      */
     private boolean verificarPlayServices() {
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
+        final int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode, activity, Constantes.PLAY_SERVICES_RESOLUTION_REQUEST);
+               // GooglePlayServicesUtil.getErrorDialog(resultCode, activity, Constantes.PLAY_SERVICES_RESOLUTION_REQUEST);
             } else {
                 Toast.makeText(activity.getApplicationContext(), "Play services sem suporte", Toast.LENGTH_SHORT).show();
             }

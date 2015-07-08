@@ -3,6 +3,7 @@ package br.great.jogopervasivo;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -11,25 +12,40 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import org.json.JSONObject;
 
 import br.great.jogopervasivo.actvititesDoJogo.ConfiguracoesActivity;
 import br.great.jogopervasivo.actvititesDoJogo.NovoUsuarioActivity;
 import br.great.jogopervasivo.actvititesDoJogo.TabHostActivity;
-import br.great.jogopervasivo.actvititesDoJogo.TelaPrincipalActivity;
-import br.great.jogopervasivo.actvititesDoJogo.TiposDeJogosDisponiveisActivity;
 import br.great.jogopervasivo.util.Armazenamento;
 import br.great.jogopervasivo.util.Constantes;
-import br.great.jogopervasivo.util.InformacoesTemporarias;
 import br.great.jogopervasivo.webServices.Servidor;
 import br.ufc.great.arviewer.android.R;
 
 public class LoginActivity extends Activity {
 
+    private boolean verificarPlayServices() {
+        final int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                Dialog dialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, Constantes.PLAY_SERVICES_RESOLUTION_REQUEST);
+                dialog.show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Play services sem suporte", Toast.LENGTH_SHORT).show();
+            }
+            return false;
+        }
+        return true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        verificarPlayServices();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         Armazenamento.salvar(Constantes.JOGO_EXECUTANDO, false, this);
@@ -77,7 +93,7 @@ public class LoginActivity extends Activity {
                         } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                             builder.setMessage(jsonObject.optString("mensagem"));
-                            builder.setNegativeButton(R.string.OK,null);
+                            builder.setNegativeButton(R.string.OK, null);
                             builder.create().show();
                         }
                     }
@@ -88,6 +104,13 @@ public class LoginActivity extends Activity {
         configuracoes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                Intent intent = new Intent(LoginActivity.this, AndroidLauncher.class);
+//                intent.putExtra("NOME_OBJETO", "ship.obj");
+//                intent.putExtra("NOME_TEXTURA", "ship.png");
+//                intent.putExtra("LAT_OBJETO",-3.745896);
+//                intent.putExtra("LON_OBJETO",-38.574405);
+//                intent.putExtra("LAT_JOGADOR",-3.745880);
+//                intent.putExtra("LON_JOGADOR",-38.574410);
                 startActivity(new Intent(LoginActivity.this, ConfiguracoesActivity.class));
             }
         });

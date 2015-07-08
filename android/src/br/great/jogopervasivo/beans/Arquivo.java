@@ -9,19 +9,24 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import br.great.jogopervasivo.download.DownloadImagem;
+import br.great.jogopervasivo.download.DownloadObj;
 import br.great.jogopervasivo.download.DownloadSom;
+import br.great.jogopervasivo.download.DownloadTexturaPNG;
 import br.great.jogopervasivo.download.DownloadVideo;
 import br.great.jogopervasivo.util.Constantes;
 import br.great.jogopervasivo.util.InformacoesTemporarias;
 
 /**
  * Created by messiaslima on 11/02/2015.
+ * @author messiaslima
+
  */
 public class Arquivo {
     private String tipo;
     private int prioridade;
     private int mecanica_id;
     private String arquivo;
+    private String textura;
     private int arquivo_id;
     private int tentativasDownload = 0;
 
@@ -144,6 +149,30 @@ public class Arquivo {
                     baixar(context);
                 }
                 break;
+            case Constantes.TIPO_MECANICA_V_OBJ_3D:
+                DownloadObj downloadObj = new DownloadObj(getArquivo());
+                DownloadTexturaPNG downloadTexturaPNG = new DownloadTexturaPNG(getTextura());
+                try {
+                    File obj = downloadObj.downloadObjSincrono();
+                    File textura = downloadTexturaPNG.downloadTexturaSincrono();
+                    if (obj == null || textura==null) {
+                        if (InformacoesTemporarias.conexaoAtiva(context)) {
+                            baixar(context);
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        salvarNoSistemaDeArquivos(obj);
+                        salvarTexturaNoSistemaDeArquivos(textura);
+                    }
+                } catch (FileNotFoundException fnfe) {
+                    Log.e(Constantes.TAG, "Arquivo não encontrado");
+                    return false;
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                    baixar(context);
+                }
+                break;
             default:
                 throw new UnsupportedOperationException();
         }
@@ -153,5 +182,15 @@ public class Arquivo {
 
     public void salvarNoSistemaDeArquivos(File arquivoASerSalvo) {
         arquivoASerSalvo.renameTo(new File(arquivoASerSalvo.getParent() + "/" + getArquivo()));
+    }
+    public void salvarTexturaNoSistemaDeArquivos(File arquivoASerSalvo) {
+        arquivoASerSalvo.renameTo(new File(arquivoASerSalvo.getParent() + "/" + getTextura()));
+    }
+    public String getTextura() {
+        return textura;
+    }
+
+    public void setTextura(String textura) {
+        this.textura = textura;
     }
 }

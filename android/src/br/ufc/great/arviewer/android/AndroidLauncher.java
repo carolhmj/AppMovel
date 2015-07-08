@@ -1,5 +1,6 @@
 package br.ufc.great.arviewer.android;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import java.io.File;
 
 import br.ufc.great.arviewer.ARViewer;
+import br.ufc.great.arviewer.Resultado;
 
 public class AndroidLauncher extends AndroidApplication implements LocationListener {
 
@@ -36,18 +38,20 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
     ProgressDialog progressDialog;
     LocationManager locationManager;
 
+    public Resultado clicado = new Resultado(false);
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         String nome_objeto = intent.getExtras().getString("NOME_OBJETO");
         String nome_textura = intent.getExtras().getString("NOME_TEXTURA");
         lat_obj = intent.getExtras().getDouble("LAT_OBJETO");
         lon_obj = intent.getExtras().getDouble("LON_OBJETO");
-        double lat_jogador = intent.getExtras().getDouble("LAT_JOGADOR");
-        double lon_jogador = intent.getExtras().getDouble("LON_JOGADOR");
+
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Aguarde enquando o GPS atualiza a posicao...");
@@ -61,13 +65,20 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
         cfg.a = 8;
 
 
-        File arquivo = new File(Environment.getExternalStorageDirectory() + "/GreatPervasiveGame/"+nome_objeto);
+        File arquivo = new File(Environment.getExternalStorageDirectory() + "/GreatPervasiveGame/" + nome_objeto);
 
         if (arquivo.exists()) {
             Log.e("File", "Existe");
         }
 
-        arViewer = new ARViewer(arquivo, nome_objeto, nome_textura);
+        arViewer = new ARViewer(arquivo, nome_objeto, nome_textura, new Thread(new Runnable() {
+            @Override
+            public void run() {
+                setResult(RESULT_OK);
+                Log.e("TAG","Executou a Thread");
+                finish();
+            }
+        }));
 
         libgdxView = initializeForView(arViewer, cfg);
 
@@ -94,13 +105,13 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
         GiroscopeListener giroscopeListener = new GiroscopeListener(this, arViewer);
         giroscopeListener.startMonitoring();
 
-        locationManager = ((LocationManager) getSystemService(Context.LOCATION_SERVICE));
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 0.01f, this);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, this);
 
-        onLocationChanged(generateLocation(lat_jogador,lon_jogador));
     }
 
-    public Location generateLocation(double lat, double lon) {
+
+    public Location newLocation(double lat, double lon) {
         Location l = new Location(LocationManager.GPS_PROVIDER);
         l.setLatitude(lat);
         l.setLongitude(lon);
@@ -131,11 +142,9 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
         return c; // returns null if camera is unavailable
     }
 
-    @Override
     public void onLocationChanged(Location location) {
 
         progressDialog.dismiss();
-        Armazenamento.salvarLocalizacao(location, this);
 
         Log.e(TAG, "latitude: " + location.getLatitude()
                 + " , longitude: " + location.getLongitude() + " , altitude: "
@@ -155,29 +164,43 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
 
 
         arViewer.setCamCoord(xcoord, zcoord, location.getAltitude());
-        Log.e(TAG, "distance: " + dist[0]);
+        Log.e(TAG, "distance: " + dist[0] + " coordenadas " + xcoord + ", " + zcoord);
         //Log.e(TAG, "x,y: " + xcoord + " , " + ycoord);
 
     }
 
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
+    public void onStatusChanged(String s, int i, Bundle bundle) {
 
     }
 
     @Override
-    public void onProviderEnabled(String provider) {
+    public void onProviderEnabled(String s) {
 
     }
 
     @Override
-    public void onProviderDisabled(String provider) {
+    public void onProviderDisabled(String s) {
 
+    }
+
+    @Override
+    protected void onPause() {
+        Log.e("TAG", "Executou onpause");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.e("TAG", "Executou onStop");
+        super.onStop();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.e("TAG", "Executou ondestroy");
+        locationManager.removeUpdates(this);
         mCamera.stopPreview();
         mCamera.release();
     }

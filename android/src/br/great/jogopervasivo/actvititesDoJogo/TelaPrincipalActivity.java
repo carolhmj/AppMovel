@@ -39,7 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import br.ufc.great.arviewer.android.R;
 import br.great.jogopervasivo.arrayAdapters.ListarMecanicasAdapter;
 import br.great.jogopervasivo.beans.Grupo;
 import br.great.jogopervasivo.beans.Jogador;
@@ -50,6 +49,7 @@ import br.great.jogopervasivo.beans.mecanicas.CTextos;
 import br.great.jogopervasivo.beans.mecanicas.CVideos;
 import br.great.jogopervasivo.beans.mecanicas.Deixar;
 import br.great.jogopervasivo.beans.mecanicas.IrLocais;
+import br.great.jogopervasivo.beans.mecanicas.VObj3d;
 import br.great.jogopervasivo.beans.mecanicas.VSons;
 import br.great.jogopervasivo.beans.mecanicas.VVideos;
 import br.great.jogopervasivo.beans.mecanicas.Vfotos;
@@ -61,10 +61,11 @@ import br.great.jogopervasivo.util.InformacoesTemporarias;
 import br.great.jogopervasivo.webServices.AtualizarLocalizacaoJogadores;
 import br.great.jogopervasivo.webServices.SolicitarMissaoAtual;
 import br.great.jogopervasivo.webServices.UploadDeArquivo;
+import br.ufc.great.arviewer.android.R;
 
 public class TelaPrincipalActivity extends Activity implements LocationListener {
     private GoogleMap mapa;
-    private LocationManager locationManager = null;
+    public LocationManager locationManager = null;
     ProgressDialog progressDialog;
     Marker marcadorJogador = null, marcadorIrLocal = null;
     MarkerOptions opcoesDeMarcador;
@@ -73,6 +74,7 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
     public static CVideos mecanicaCVideosAtual = null;
     public static Deixar mecanicaDeixarAtual = null;
     public static VVideos mecanicaVVideosAtual = null;
+    public static VObj3d mecanicaVObj3dAtual = null;
     static ActionBar actionBar;
     boolean pediuMecanicas = false;
 
@@ -85,6 +87,7 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
     public static final int REQUEST_CODE_FOTO = 3;
     public static final int REQUEST_CODE_VIDEO = 200;
     public static final int REQUEST_CODE_VER_VIDEO = 201;
+    public static final int REQUEST_CODE_VER_OBJ_3D = 202;
 
 
     /**
@@ -184,7 +187,7 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
                 } catch (Exception e) {
                     Log.e(Constantes.TAG, "Ainda nao tem equipe selecionada");
                 }
-                if (mecanica == null && InformacoesTemporarias.grupoAtual != null && InformacoesTemporarias.grupoAtual.getTipoJogador() == Jogador.TIPO_CAPTURADOR) {
+                if (mecanica == null && InformacoesTemporarias.grupoAtual != null && ((InformacoesTemporarias.grupoAtual.getTipoJogador() == Jogador.TIPO_CAPTURADOR) ||  (InformacoesTemporarias.grupoAtual.getTipoJogador() == Jogador.TIPO_HIBRIDO))) {
                     //Log.e(Constantes.TAG, "Sou capturador");
 
                     Jogador jogador = InformacoesTemporarias.getJogador(nome);
@@ -192,7 +195,7 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
                         Location localizacaoJogador = Conversor.latLngToLocation(LocationManager.GPS_PROVIDER, jogador.getPosicao());
                         if (Armazenamento.resgatarUltimaLocalizacao(TelaPrincipalActivity.this).distanceTo(localizacaoJogador) < Constantes.LIMIAR_DE_PROXIMIDADE) {
                             // Log.e(Constantes.TAG, "cliquei no jogador :" + jogador.getNome());
-                            if (jogador.getGrupo().getTipoJogador() == Jogador.TIPO_CAPTURAVEL) {
+                            if (jogador.getGrupo().getTipoJogador() == Jogador.TIPO_CAPTURAVEL  || jogador.getGrupo().getTipoJogador() == Jogador.TIPO_HIBRIDO ) {
                                 //Log.e(Constantes.TAG, "Jogador clicado é capturavel");
                                 jogador.capturar(TelaPrincipalActivity.this);
                             } else {
@@ -257,8 +260,11 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
                             case Constantes.TIPO_MECANICA_DVIDEOS:
                                 ((Deixar) mecanica).realizarMecanica(TelaPrincipalActivity.this);
                                 break;
+                            case Constantes.TIPO_MECANICA_V_OBJ_3D:
+                                ((VObj3d) mecanica).realizarMecanica(TelaPrincipalActivity.this);
+                                break;
                             default:
-                                Toast.makeText(getApplicationContext(), "Tipo da mecanica ainda náo implementada." + mecanica.getTipoSimples(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Tipo da mecanica ainda náo implementada: " + mecanica.getTipoSimples(), Toast.LENGTH_LONG).show();
                         }
 
 
@@ -617,7 +623,9 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.e("TAG","Executou onActivityResult");
         if (resultCode == Activity.RESULT_OK) {
+
             if (requestCode == REQUEST_CODE_FOTO) {
                 Log.i(Constantes.TAG, "Caminho da imagem: " + CFotos.pathDeImagem);
                 File foto = new File(CFotos.pathDeImagem);
@@ -635,11 +643,13 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
                 String tipo = extras.getString(InventarioActivity.ITEM_TIPO);
                 String arquivo = extras.getString(InventarioActivity.ITEM_ARQUIVO);
                 mecanicaDeixarAtual.confirmarRealizacao(this, arquivo, tipo, mecSimplesId);
+                mecanicaDeixarAtual = null;
+            } else if (requestCode == REQUEST_CODE_VER_OBJ_3D) {
+                mecanicaVObj3dAtual.confirmarRealizacao(TelaPrincipalActivity.this, null, null, null);
+                mecanicaVObj3dAtual = null;
             }
         } else if (requestCode == Vfotos.REQUEST_CODE_VER_IMAGEM) {
-
             Toast.makeText(this, "Viu a imagem", Toast.LENGTH_SHORT).show();
-
         } else if (requestCode == REQUEST_CODE_VER_VIDEO) {
             mecanicaVVideosAtual.confirmarRealizacao(TelaPrincipalActivity.this, null, null, null);
             mecanicaVVideosAtual = null;

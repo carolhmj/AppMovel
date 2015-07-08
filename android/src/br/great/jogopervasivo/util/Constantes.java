@@ -12,7 +12,7 @@ import br.great.jogopervasivo.actvititesDoJogo.ConfiguracoesActivity;
 public class Constantes {
 
     public static final String SERVIDOR_DE_APLICACAO = "http://200.129.43.207:8083/WebServidor/webresources";
-    public static final String SERVIDOR_DE_ARQUIVOS = "http://200.129.43.207/pervasivebd/";
+    public static final String SERVIDOR_DE_ARQUIVOS = "http://200.129.43.207/pervasivedb/";
 
     //public static final String SERVIDOR_DE_APLICACAO = "http://192.168.0.43:8080/WebServidor/webresources";
     //public static final String SERVIDOR_DE_ARQUIVOS = "http://192.168.0.43/pervasivebd/img/";
@@ -39,6 +39,7 @@ public class Constantes {
     public static final String TIPO_MECANICA_VFOTOS = "vfotos";
     public static final String TIPO_MECANICA_VSONS = "vsons";
     public static final String TIPO_MECANICA_VVIDEOS = "vvideos";
+    public static final String TIPO_MECANICA_V_OBJ_3D = "vobjeto3d";
     public static final String TIPO_MECANICA_IRLOCAIS = "irlocais";
     public static final String TIPO_MECANICA_VTEXTOS = "vtextos";
     public static final String TIPO_MECANICA_CSONS = "csons";

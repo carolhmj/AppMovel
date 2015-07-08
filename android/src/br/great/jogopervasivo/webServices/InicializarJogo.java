@@ -183,6 +183,7 @@ public class InicializarJogo extends AsyncTask<Void, String, Boolean> {
                 arquivo.setPrioridade(arquivoObject.getInt("prioridade"));
                 arquivo.setTipo(arquivoObject.getString("tipo"));
                 arquivo.setArquivo(arquivoObject.getString("arquivo"));
+                arquivo.setTextura(arquivoObject.optString("textura"));
                 arquivos.add(arquivo);
             }
 

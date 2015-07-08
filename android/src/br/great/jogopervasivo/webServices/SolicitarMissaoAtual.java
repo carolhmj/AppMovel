@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.great.jogopervasivo.beans.mecanicas.VObj3d;
 import br.ufc.great.arviewer.android.R;
 import br.great.jogopervasivo.beans.Grupo;
 import br.great.jogopervasivo.beans.InstanciaDeJogo;
@@ -138,7 +139,6 @@ public class SolicitarMissaoAtual extends AsyncTask<Void, Void, Void> {
                             case Constantes.TIPO_MECANICA_DFOTOS:
                                 mecanica = new Deixar();
                                 ((Deixar) mecanica).setTipoObjeto(objetoMecanica.getString("tipoObjeto"));
-
                                 break;
                             case Constantes.TIPO_MECANICA_DOBJETOS3D:
                                 mecanica = new Deixar();
@@ -158,11 +158,16 @@ public class SolicitarMissaoAtual extends AsyncTask<Void, Void, Void> {
                             case Constantes.TIPO_MECANICA_DVIDEOS:
                                 mecanica = new Deixar();
                                 ((Deixar) mecanica).setTipoObjeto(objetoMecanica.getString("tipoObjeto"));
-
+                                break;
+                            case Constantes.TIPO_MECANICA_V_OBJ_3D:
+                                mecanica = new VObj3d();
+                                ((VObj3d)mecanica).setArqObj3d(objetoMecanica.getString("arqObjeto3d"));
+                                ((VObj3d)mecanica).setArqTextura(objetoMecanica.getString("arqTextura"));
                                 break;
                             default:
-                                mecanica = new Mecanica();
-                                break;
+                                throw new UnsupportedOperationException();
+                                //mecanica = new Mecanica();
+                                //break;
                         }
 
 

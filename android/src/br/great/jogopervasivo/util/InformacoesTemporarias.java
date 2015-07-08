@@ -115,6 +115,41 @@ public class InformacoesTemporarias {
         return image;
     }
 
+
+    /**
+     * Cria arquivo temporário de objeto 3d
+     *
+     * @return File do arquivo temporário
+     */
+    public static File criarObjTemporario() {
+        String fileName = "GamePervasivoVideo";
+        String extension = ".obj";
+        File video = null;
+        try {
+            video = File.createTempFile(fileName, extension, file);
+        } catch (Exception ioe) {
+            Log.e("Debug", ioe.getMessage());
+        }
+        return video;
+    }
+
+    /**
+     * Cria arquivo temporário de textura png
+     *
+     * @return File do arquivo temporário
+     */
+    public static File criarPNGTemporario() {
+        String fileName = "GamePervasivo";
+        String extension = ".png";
+        File video = null;
+        try {
+            video = File.createTempFile(fileName, extension, file);
+        } catch (Exception ioe) {
+            Log.e("Debug", ioe.getMessage());
+        }
+        return video;
+    }
+
     /**
      * Cria arquivo temporário de imagem
      *
