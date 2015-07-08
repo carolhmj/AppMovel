@@ -21,10 +21,12 @@ import br.great.jogopervasivo.actvititesDoJogo.TelaPrincipalActivity;
 import br.great.jogopervasivo.beans.Jogador;
 import br.great.jogopervasivo.util.Constantes;
 import br.great.jogopervasivo.util.InformacoesTemporarias;
+import br.great.jogopervasivo.webServices.RecuperarObjetosInventario;
 import br.great.jogopervasivo.webServices.SolicitarMissaoAtual;
 
 /**
  * Created by messiaslima on 26/02/2015.
+ *
  * @author messiaslima
  * @version 1.0
  */
@@ -51,6 +53,7 @@ public class GcmIntentService extends IntentService {
                     break;
                 default:
                     String usuario = extras.getString("user"), tipoAcao = extras.getString("tipoacao");
+                    Log.e("Extras", extras.toString());
                     if (usuario.equals("root")) {
                         Log.i(Constantes.TAG, "Usuario " + usuario + " manda:" + tipoAcao);
                         if (tipoAcao.equals("getMecanicaAtual")) {
@@ -58,6 +61,9 @@ public class GcmIntentService extends IntentService {
                         }
                         if (tipoAcao.equals("apresMensagem")) {
                             InformacoesTemporarias.mensagem = extras.getString("message");
+                        }
+                        if (tipoAcao.equals("atualizaInventario")) {
+                            RecuperarObjetosInventario.recuperar(this);
                         }
                         if (tipoAcao.equals("atualizaLocalizacao") && InformacoesTemporarias.grupo != null) {
                             List<Jogador> marcadores = new ArrayList<>();
@@ -94,10 +100,11 @@ public class GcmIntentService extends IntentService {
                         }
                     } else {
 
-
                         String mensagem = extras.getString("message");
                         ChatActivity.receberMensagem(usuario, mensagem);
-                        NotificationCustomUtil.sendNotification(GcmIntentService.this, usuario, mensagem);
+                        if (!ChatActivity.telaAberta) {
+                            NotificationCustomUtil.sendNotification(GcmIntentService.this, usuario, mensagem);
+                        }
                     }
 
                     break;

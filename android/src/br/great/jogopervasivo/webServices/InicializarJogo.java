@@ -104,6 +104,7 @@ public class InicializarJogo extends AsyncTask<Void, String, Boolean> {
             InformacoesTemporarias.grupoAtual = grupo;
             Armazenamento.salvar(Constantes.JOGO_EXECUTANDO, true, context);//Diz que tem jogo executando;
             ((Activity) context).finish(); //Faz casting do Context para activity  e fecha a janela.
+            RecuperarObjetosInventario.recuperar(context);
         } else {
             //Se der errado, ele mostra um AlertDialog
             AlertDialog.Builder builder = new AlertDialog.Builder(context);

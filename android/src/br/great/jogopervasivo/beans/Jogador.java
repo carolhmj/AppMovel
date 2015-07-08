@@ -131,4 +131,8 @@ public class Jogador {
         }.execute();
     }
 
+    @Override
+    public String toString() {
+        return nome;
+    }
 }

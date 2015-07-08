@@ -15,6 +15,7 @@ import br.great.jogopervasivo.beans.mecanicas.Imecanica;
 import br.great.jogopervasivo.util.Armazenamento;
 import br.great.jogopervasivo.util.Constantes;
 import br.great.jogopervasivo.util.InformacoesTemporarias;
+import br.great.jogopervasivo.webServices.RecuperarObjetosInventario;
 import br.great.jogopervasivo.webServices.Servidor;
 
 /**
@@ -274,9 +275,9 @@ public class Mecanica {
                         }
 
                         setRealizada(true);
+                        RecuperarObjetosInventario.recuperar(context);
                         TelaPrincipalActivity.atualizarVida();
                         InformacoesTemporarias.contextoTelaPrincipal.transicaoMarcador(getNome());
-
                     }
                 } catch (JSONException e) {
                     if (InformacoesTemporarias.conexaoAtiva(context)) {

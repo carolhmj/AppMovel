@@ -56,7 +56,7 @@ import br.great.jogopervasivo.beans.mecanicas.Vfotos;
 import br.great.jogopervasivo.beans.mecanicas.Vtextos;
 import br.great.jogopervasivo.util.Armazenamento;
 import br.great.jogopervasivo.util.Constantes;
-import br.great.jogopervasivo.util.Conversor;
+import br.great.jogopervasivo.util.MetodosUteis;
 import br.great.jogopervasivo.util.InformacoesTemporarias;
 import br.great.jogopervasivo.webServices.AtualizarLocalizacaoJogadores;
 import br.great.jogopervasivo.webServices.SolicitarMissaoAtual;
@@ -192,7 +192,7 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
 
                     Jogador jogador = InformacoesTemporarias.getJogador(nome);
                     if (jogador != null) {
-                        Location localizacaoJogador = Conversor.latLngToLocation(LocationManager.GPS_PROVIDER, jogador.getPosicao());
+                        Location localizacaoJogador = MetodosUteis.latLngToLocation(LocationManager.GPS_PROVIDER, jogador.getPosicao());
                         if (Armazenamento.resgatarUltimaLocalizacao(TelaPrincipalActivity.this).distanceTo(localizacaoJogador) < Constantes.LIMIAR_DE_PROXIMIDADE) {
                             // Log.e(Constantes.TAG, "cliquei no jogador :" + jogador.getNome());
                             if (jogador.getGrupo().getTipoJogador() == Jogador.TIPO_CAPTURAVEL  || jogador.getGrupo().getTipoJogador() == Jogador.TIPO_HIBRIDO ) {

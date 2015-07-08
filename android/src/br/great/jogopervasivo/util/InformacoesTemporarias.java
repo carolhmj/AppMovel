@@ -61,7 +61,7 @@ public class InformacoesTemporarias {
             for (Grupo grupo : grupos) {
                 if (grupo.getId() != grupoAtual.getId()) {
                     for (Jogador adversario : grupo.getJogadores()) {
-                        Location localizacaoAdversario = Conversor.latLngToLocation(LocationManager.GPS_PROVIDER, adversario.getPosicao());
+                        Location localizacaoAdversario = MetodosUteis.latLngToLocation(LocationManager.GPS_PROVIDER, adversario.getPosicao());
                         Float distanciaAtual = localizacaoJogador.distanceTo(localizacaoAdversario);
                         Float distanciaSalva = distanciaJogadores.get(adversario.getNome());
                         if (distanciaSalva == null) {

@@ -91,4 +91,7 @@
     <string name="legenda">Legenda</string>
     <string name="nao_pode_capturar_jogador">Esse jegador não pode ser capturado</string>
     <string name="title_activity_configuracoes">ConfiguracoesActivity</string>
+    <string name="escolha_jogador_title">Escolha o jogador</string>
+    <string name="escolha_jogador_message">Escolha com quem voce vai compartilhar o objeto</string>
+    <string name="objeto_compaartilhado">Objeto compartilhado com </string>
 </resources>

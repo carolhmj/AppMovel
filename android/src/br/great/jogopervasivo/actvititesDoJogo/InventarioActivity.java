@@ -2,15 +2,13 @@ package br.great.jogopervasivo.actvititesDoJogo;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-
+import br.great.jogopervasivo.arrayAdapters.InventarioArrayAdapter;
 import br.great.jogopervasivo.beans.ObjetoInventario;
 import br.great.jogopervasivo.util.Constantes;
 import br.great.jogopervasivo.util.InformacoesTemporarias;
@@ -29,15 +27,12 @@ public class InventarioActivity extends Activity {
         setContentView(R.layout.inventario);
 
 
-
         listView = (ListView) findViewById(R.id.objetoInventarioListView);
 
 
         final Intent intent = getIntent();
         final Bundle bundle = intent.getExtras();
         boolean selecao = false;
-
-
 
         if (bundle != null) {
             selecao = bundle.getBoolean("selecao", false);
@@ -59,14 +54,14 @@ public class InventarioActivity extends Activity {
                     }
                 }
             });
-        }else{
+        } else {
             recuperarObjetos();
         }
 
 
     }
 
-    public void recuperarObjetos(){
+    public void recuperarObjetos() {
         InformacoesTemporarias.inventario.clear();
         RecuperarObjetosInventario.recuperar(this);
     }
@@ -113,7 +108,7 @@ public class InventarioActivity extends Activity {
     }
 
     public void atualizarLista() {
-        ArrayAdapter<ObjetoInventario> inventarioArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, InformacoesTemporarias.inventario);
+        InventarioArrayAdapter inventarioArrayAdapter = new InventarioArrayAdapter(this, R.layout.invertario_item_lista, InformacoesTemporarias.inventario);
         listView.setAdapter(inventarioArrayAdapter);
     }
 }

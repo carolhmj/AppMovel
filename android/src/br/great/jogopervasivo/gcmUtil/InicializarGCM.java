@@ -49,12 +49,13 @@ public class InicializarGCM {
             //Log.i(Constantes.TAG, "Google play services instalado");
             gcm = GoogleCloudMessaging.getInstance(activity);
             String registroSalvo = Armazenamento.resgatarRegistroDoDispositivo(activity);
+            Log.e(Constantes.TAG, "Registro recebido é: " + registroRecebido);
             if (registroSalvo.trim().length() == 0) {
-                Log.i(Constantes.TAG, "Sem registro salvo");
+                Log.e(Constantes.TAG, "Sem registro salvo");
                 registrarDispositivo();
             } else {
                 if (!registroSalvo.equals(registroRecebido)) {
-                    Log.i(Constantes.TAG, "Registro recebido do servidor é diferente \n o registro salvo é: " + registroSalvo);
+                    Log.e(Constantes.TAG, "Registro recebido do servidor é diferente \n o registro salvo é: " + registroSalvo);
                     registrarDispositivo();
                 }
             }

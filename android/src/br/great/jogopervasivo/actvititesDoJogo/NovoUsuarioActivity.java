@@ -45,7 +45,7 @@ public class NovoUsuarioActivity extends Activity {
 
                         @Override
                         protected JSONObject doInBackground(Void... params) {
-                            return Servidor.cadastrarNovoUsuário(NovoUsuarioActivity.this, login.getEditableText().toString(), senha2.getEditableText().toString());
+                            return Servidor.cadastrarNovoUsuário(NovoUsuarioActivity.this, login.getEditableText().toString().trim(), senha2.getEditableText().toString().trim());
                         }
 
                         @Override
