@@ -38,13 +38,18 @@ public class Mecanica {
     private LatLng localizacao;
     private boolean liberada;
     private int estado;
-    private boolean visivel;
+    private int visivel;
     private boolean mostrar = true;
     private int id;
     private int tipo;
     private Imecanica objeto;
     private boolean escondido;
     private String msgbloqueio;
+
+    public static final int VISIVEL_NAO=0;
+    public static final int VISIVEL_SIM=1;
+    public static final int VISIVEL_NUNCA=2;
+    public static final int VISIVEL_NUNCA2=2;
 
     public boolean isMostrar() {
         return mostrar;
@@ -97,11 +102,15 @@ public class Mecanica {
     }
 
     public boolean isVisivel() {
-        return visivel;
+        return visivel==VISIVEL_SIM;
     }
 
-    public void setVisivel(boolean visivel) {
+    public void setVisivel(int visivel) {
         this.visivel = visivel;
+    }
+
+    public int getVisivel(){
+        return this.visivel;
     }
 
     public int getTipo() {

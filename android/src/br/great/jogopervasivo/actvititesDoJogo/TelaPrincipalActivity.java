@@ -56,8 +56,8 @@ import br.great.jogopervasivo.beans.mecanicas.Vfotos;
 import br.great.jogopervasivo.beans.mecanicas.Vtextos;
 import br.great.jogopervasivo.util.Armazenamento;
 import br.great.jogopervasivo.util.Constantes;
-import br.great.jogopervasivo.util.MetodosUteis;
 import br.great.jogopervasivo.util.InformacoesTemporarias;
+import br.great.jogopervasivo.util.MetodosUteis;
 import br.great.jogopervasivo.webServices.AtualizarLocalizacaoJogadores;
 import br.great.jogopervasivo.webServices.SolicitarMissaoAtual;
 import br.great.jogopervasivo.webServices.UploadDeArquivo;
@@ -187,7 +187,7 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
                 } catch (Exception e) {
                     Log.e(Constantes.TAG, "Ainda nao tem equipe selecionada");
                 }
-                if (mecanica == null && InformacoesTemporarias.grupoAtual != null && ((InformacoesTemporarias.grupoAtual.getTipoJogador() == Jogador.TIPO_CAPTURADOR) ||  (InformacoesTemporarias.grupoAtual.getTipoJogador() == Jogador.TIPO_HIBRIDO))) {
+                if (mecanica == null && InformacoesTemporarias.grupoAtual != null && ((InformacoesTemporarias.grupoAtual.getTipoJogador() == Jogador.TIPO_CAPTURADOR) || (InformacoesTemporarias.grupoAtual.getTipoJogador() == Jogador.TIPO_HIBRIDO))) {
                     //Log.e(Constantes.TAG, "Sou capturador");
 
                     Jogador jogador = InformacoesTemporarias.getJogador(nome);
@@ -195,7 +195,7 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
                         Location localizacaoJogador = MetodosUteis.latLngToLocation(LocationManager.GPS_PROVIDER, jogador.getPosicao());
                         if (Armazenamento.resgatarUltimaLocalizacao(TelaPrincipalActivity.this).distanceTo(localizacaoJogador) < Constantes.LIMIAR_DE_PROXIMIDADE) {
                             // Log.e(Constantes.TAG, "cliquei no jogador :" + jogador.getNome());
-                            if (jogador.getGrupo().getTipoJogador() == Jogador.TIPO_CAPTURAVEL  || jogador.getGrupo().getTipoJogador() == Jogador.TIPO_HIBRIDO ) {
+                            if (jogador.getGrupo().getTipoJogador() == Jogador.TIPO_CAPTURAVEL || jogador.getGrupo().getTipoJogador() == Jogador.TIPO_HIBRIDO) {
                                 //Log.e(Constantes.TAG, "Jogador clicado é capturavel");
                                 jogador.capturar(TelaPrincipalActivity.this);
                             } else {
@@ -206,75 +206,78 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
                     }
 
                 }
-
-                if (mecanica != null && !(mecanica.isRealizada())) {
-                    Location localizacaoJogador = Armazenamento.resgatarUltimaLocalizacao(TelaPrincipalActivity.this);
-                    Location localizacaoMecanica = new Location(LocationManager.GPS_PROVIDER);
-                    localizacaoMecanica.setLatitude(mecanica.getLocalizacao().latitude);
-                    localizacaoMecanica.setLongitude(mecanica.getLocalizacao().longitude);
-                    if (localizacaoJogador.distanceTo(localizacaoMecanica) < Constantes.LIMIAR_DE_PROXIMIDADE) {
-                        String tipoMecanica = mecanica.getTipoSimples();
-
-                        switch (tipoMecanica) {
-                            case Constantes.TIPO_MECANICA_CVIDEOS:
-                                mecanicaCVideosAtual = (CVideos) mecanica;
-                                ((CVideos) mecanica).realizarMecanica(TelaPrincipalActivity.this);
-                                break;
-                            case Constantes.TIPO_MECANICA_VFOTOS:
-                                ((Vfotos) mecanica).realizarMecanica(TelaPrincipalActivity.this);
-                                break;
-                            case Constantes.TIPO_MECANICA_VTEXTOS:
-                                ((Vtextos) mecanica).realizarMecanica(TelaPrincipalActivity.this);
-                                break;
-                            case Constantes.TIPO_MECANICA_CFOTOS:
-                                mecanicaCFotoAtual = (CFotos) mecanica;
-                                ((CFotos) mecanica).realizarMecanica(TelaPrincipalActivity.this);
-                                break;
-                            case Constantes.TIPO_MECANICA_IRLOCAIS:
-                                ((IrLocais) mecanica).realizarMecanica(TelaPrincipalActivity.this);
-                                break;
-                            case Constantes.TIPO_MECANICA_CSONS:
-                                ((CSons) mecanica).realizarMecanica(TelaPrincipalActivity.this);
-                                break;
-                            case Constantes.TIPO_MECANICA_VSONS:
-                                ((VSons) mecanica).realizarMecanica(TelaPrincipalActivity.this);
-                                break;
-                            case Constantes.TIPO_MECANICA_CTEXTOS:
-                                ((CTextos) mecanica).realizarMecanica(TelaPrincipalActivity.this);
-                                break;
-                            case Constantes.TIPO_MECANICA_VVIDEOS:
-                                ((VVideos) mecanica).realizarMecanica(TelaPrincipalActivity.this);
-                                break;
-                            case Constantes.TIPO_MECANICA_DFOTOS:
-                                ((Deixar) mecanica).realizarMecanica(TelaPrincipalActivity.this);
-                                break;
-                            case Constantes.TIPO_MECANICA_DOBJETOS3D:
-                                ((Deixar) mecanica).realizarMecanica(TelaPrincipalActivity.this);
-                                break;
-                            case Constantes.TIPO_MECANICA_DSONS:
-                                ((Deixar) mecanica).realizarMecanica(TelaPrincipalActivity.this);
-                                break;
-                            case Constantes.TIPO_MECANICA_DTEXTOS:
-                                ((Deixar) mecanica).realizarMecanica(TelaPrincipalActivity.this);
-                                break;
-                            case Constantes.TIPO_MECANICA_DVIDEOS:
-                                ((Deixar) mecanica).realizarMecanica(TelaPrincipalActivity.this);
-                                break;
-                            case Constantes.TIPO_MECANICA_V_OBJ_3D:
-                                ((VObj3d) mecanica).realizarMecanica(TelaPrincipalActivity.this);
-                                break;
-                            default:
-                                Toast.makeText(getApplicationContext(), "Tipo da mecanica ainda náo implementada: " + mecanica.getTipoSimples(), Toast.LENGTH_LONG).show();
-                        }
-
-
-                    } else {
-                        Log.i(Constantes.TAG, "Ainda longe: Distancia: " + localizacaoJogador.distanceTo(localizacaoMecanica));
-                    }
-                }
+                realizarMecanica(mecanica);
                 return false;
             }
         });
+    }
+
+    private void realizarMecanica(Mecanica mecanica) {
+        if (mecanica != null && !(mecanica.isRealizada())) {
+            Location localizacaoJogador = Armazenamento.resgatarUltimaLocalizacao(TelaPrincipalActivity.this);
+            Location localizacaoMecanica = new Location(LocationManager.GPS_PROVIDER);
+            localizacaoMecanica.setLatitude(mecanica.getLocalizacao().latitude);
+            localizacaoMecanica.setLongitude(mecanica.getLocalizacao().longitude);
+            if (localizacaoJogador.distanceTo(localizacaoMecanica) < Constantes.LIMIAR_DE_PROXIMIDADE) {
+                String tipoMecanica = mecanica.getTipoSimples();
+
+                switch (tipoMecanica) {
+                    case Constantes.TIPO_MECANICA_CVIDEOS:
+                        mecanicaCVideosAtual = (CVideos) mecanica;
+                        ((CVideos) mecanica).realizarMecanica(TelaPrincipalActivity.this);
+                        break;
+                    case Constantes.TIPO_MECANICA_VFOTOS:
+                        ((Vfotos) mecanica).realizarMecanica(TelaPrincipalActivity.this);
+                        break;
+                    case Constantes.TIPO_MECANICA_VTEXTOS:
+                        ((Vtextos) mecanica).realizarMecanica(TelaPrincipalActivity.this);
+                        break;
+                    case Constantes.TIPO_MECANICA_CFOTOS:
+                        mecanicaCFotoAtual = (CFotos) mecanica;
+                        ((CFotos) mecanica).realizarMecanica(TelaPrincipalActivity.this);
+                        break;
+                    case Constantes.TIPO_MECANICA_IRLOCAIS:
+                        ((IrLocais) mecanica).realizarMecanica(TelaPrincipalActivity.this);
+                        break;
+                    case Constantes.TIPO_MECANICA_CSONS:
+                        ((CSons) mecanica).realizarMecanica(TelaPrincipalActivity.this);
+                        break;
+                    case Constantes.TIPO_MECANICA_VSONS:
+                        ((VSons) mecanica).realizarMecanica(TelaPrincipalActivity.this);
+                        break;
+                    case Constantes.TIPO_MECANICA_CTEXTOS:
+                        ((CTextos) mecanica).realizarMecanica(TelaPrincipalActivity.this);
+                        break;
+                    case Constantes.TIPO_MECANICA_VVIDEOS:
+                        ((VVideos) mecanica).realizarMecanica(TelaPrincipalActivity.this);
+                        break;
+                    case Constantes.TIPO_MECANICA_DFOTOS:
+                        ((Deixar) mecanica).realizarMecanica(TelaPrincipalActivity.this);
+                        break;
+                    case Constantes.TIPO_MECANICA_DOBJETOS3D:
+                        ((Deixar) mecanica).realizarMecanica(TelaPrincipalActivity.this);
+                        break;
+                    case Constantes.TIPO_MECANICA_DSONS:
+                        ((Deixar) mecanica).realizarMecanica(TelaPrincipalActivity.this);
+                        break;
+                    case Constantes.TIPO_MECANICA_DTEXTOS:
+                        ((Deixar) mecanica).realizarMecanica(TelaPrincipalActivity.this);
+                        break;
+                    case Constantes.TIPO_MECANICA_DVIDEOS:
+                        ((Deixar) mecanica).realizarMecanica(TelaPrincipalActivity.this);
+                        break;
+                    case Constantes.TIPO_MECANICA_V_OBJ_3D:
+                        ((VObj3d) mecanica).realizarMecanica(TelaPrincipalActivity.this);
+                        break;
+                    default:
+                        Toast.makeText(getApplicationContext(), "Tipo da mecanica ainda náo implementada: " + mecanica.getTipoSimples(), Toast.LENGTH_LONG).show();
+                }
+
+
+            } else {
+                Log.i(Constantes.TAG, "Ainda longe: Distancia: " + localizacaoJogador.distanceTo(localizacaoMecanica));
+            }
+        }
     }
 
     @Override
@@ -547,11 +550,18 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
         adicionarMarcadorJogador(location);
         verificarMensagem();
         adicionarMarcadoresOutrosPlayers();
-        verificarDistanciaDeOutrosJogadores();
+        verificarMecanicasEscondidas();
     }
 
-    private void verificarDistanciaDeOutrosJogadores() {
-
+    private void verificarMecanicasEscondidas() {
+        if (InformacoesTemporarias.mecanicasAtuais != null) {
+            List<Mecanica> mecanicas = InformacoesTemporarias.mecanicasAtuais;
+            for (Mecanica mecanica : mecanicas) {
+                if (mecanica.getVisivel() == Mecanica.VISIVEL_NUNCA || mecanica.getVisivel() == Mecanica.VISIVEL_NUNCA2) {
+                    realizarMecanica(mecanica);
+                }
+            }
+        }
     }
 
     @Override
@@ -623,7 +633,7 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.e("TAG","Executou onActivityResult");
+        Log.e("TAG", "Executou onActivityResult");
         if (resultCode == Activity.RESULT_OK) {
 
             if (requestCode == REQUEST_CODE_FOTO) {
@@ -673,12 +683,14 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
                         public void run() {
 
                             final Marker marcador = hashMarcadores.get(nome);
-                            Location location = new Location(LocationManager.GPS_PROVIDER);
-                            location.setLatitude(marcador.getPosition().latitude);
-                            location.setLongitude(marcador.getPosition().longitude);
-                            moverCamera(location);
-                            markerAlpha[0] = marcador.getAlpha();
-                            marcador.setAlpha(marcador.getAlpha() / 1.5f);
+                            if (marcador != null) {
+                                Location location = new Location(LocationManager.GPS_PROVIDER);
+                                location.setLatitude(marcador.getPosition().latitude);
+                                location.setLongitude(marcador.getPosition().longitude);
+                                moverCamera(location);
+                                markerAlpha[0] = marcador.getAlpha();
+                                marcador.setAlpha(marcador.getAlpha() / 1.5f);
+                            }
 
                         }
                     });

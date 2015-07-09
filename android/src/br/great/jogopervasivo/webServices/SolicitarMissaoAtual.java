@@ -176,7 +176,7 @@ public class SolicitarMissaoAtual extends AsyncTask<Void, Void, Void> {
                         if (mecanica.getEstado() == 4) {
                             mecanica.setRealizada(true);
                         }
-                        mecanica.setVisivel(getBoolean(objetoMissao.getInt("visivel")));
+                        mecanica.setVisivel(objetoMissao.getInt("visivel"));
                         mecanica.setEscondido(objetoMissao.getInt("visivel") == 2);
                         mecanica.setMecanicaSimples_id(objetoMissao.getInt("mecsimples_id"));
                         mecanica.setTipo(objetoMissao.getInt("tipo"));
