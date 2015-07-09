@@ -111,7 +111,7 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
     private void doneLoading() {
 
         FileTextureProviderExterna textureProvider = new FileTextureProviderExterna();
-        textureProvider.load(nomeDaTextura);
+        textureProvider.load("GreatPervasiveGame/"+nomeDaTextura);
 
 
         Model model = objLoader.loadModel(Gdx.files.external("GreatPervasiveGame/" + nomeDoObjeto), textureProvider);
