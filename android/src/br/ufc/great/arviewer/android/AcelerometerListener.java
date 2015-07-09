@@ -11,6 +11,7 @@ import br.ufc.great.arviewer.ARViewer;
 
 /**
  * Created by messiaslima on 26/06/2015.
+ * @author messiaslima
  */
 public class AcelerometerListener implements SensorEventListener {
 
@@ -30,13 +31,13 @@ public class AcelerometerListener implements SensorEventListener {
         }
     }
 
-    public void startMonitoring(){
+    public void startMonitoring() {
         sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-            arViewer.setAccelerometerValues(sensorEvent.values);
+        arViewer.setAccelerometerValues(sensorEvent.values);
     }
 
     @Override
