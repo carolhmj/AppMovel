@@ -4,6 +4,7 @@ import android.content.Context;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -18,6 +19,7 @@ import br.great.jogopervasivo.util.Constantes;
 import br.great.jogopervasivo.util.InformacoesTemporarias;
 import br.great.jogopervasivo.webServices.RecuperarObjetosInventario;
 import br.great.jogopervasivo.webServices.Servidor;
+import br.ufc.great.arviewer.android.R;
 
 /**
  * Created by messiaslima on 03/03/2015.
@@ -47,10 +49,10 @@ public class Mecanica {
     private boolean escondido;
     private String msgbloqueio;
 
-    public static final int VISIVEL_NAO=0;
-    public static final int VISIVEL_SIM=1;
-    public static final int VISIVEL_NUNCA=2;
-    public static final int VISIVEL_NUNCA2=2;
+    public static final int VISIVEL_NAO = 0;
+    public static final int VISIVEL_SIM = 1;
+    public static final int VISIVEL_NUNCA = 2;
+    public static final int VISIVEL_NUNCA2 = 2;
 
     public boolean isMostrar() {
         return mostrar;
@@ -103,14 +105,14 @@ public class Mecanica {
     }
 
     public boolean isVisivel() {
-        return visivel==VISIVEL_SIM;
+        return visivel == VISIVEL_SIM;
     }
 
     public void setVisivel(int visivel) {
         this.visivel = visivel;
     }
 
-    public int getVisivel(){
+    public int getVisivel() {
         return this.visivel;
     }
 
@@ -318,7 +320,7 @@ public class Mecanica {
         return null;
     }
 
-    public boolean verificarAutorizacaoDaMecanica(){
+    public boolean verificarAutorizacaoDaMecanica() {
         JSONObject acao = new JSONObject();
         JSONObject mecanica = new JSONObject();
         JSONArray requisiscao = new JSONArray();
@@ -331,11 +333,27 @@ public class Mecanica {
             requisiscao.put(0, acao);
             requisiscao.put(1, mecanica);
             JSONObject resposta = new JSONArray(Servidor.fazerGet(requisiscao.toString())).getJSONObject(0);
-            return resposta.getInt("result") != 0;
+            nivelDeAutorizacaoDeRealizacao = resposta.getInt("result");
+            if (resposta.getInt("result") == 0 || resposta.getInt("result") == 3) {
+                return false;
+            } else {
+                return true;
+            }
         } catch (JSONException je) {
             Log.e(Constantes.TAG, "erro no json " + je.getMessage());
             je.printStackTrace();
             return false;
+        }
+    }
+
+    private int nivelDeAutorizacaoDeRealizacao;
+
+    public void mostarToastFeedback(Context context) {
+        if (nivelDeAutorizacaoDeRealizacao == 0) {
+            Toast.makeText(context.getApplicationContext(), R.string.nao_pode_realizar_mec, Toast.LENGTH_LONG).show();
+        }
+        if (nivelDeAutorizacaoDeRealizacao == 3) {
+            Toast.makeText(context.getApplicationContext(), R.string.sem_permissao_para_realizar_mecanica, Toast.LENGTH_LONG).show();
         }
     }
 }

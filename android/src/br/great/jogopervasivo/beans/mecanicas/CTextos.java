@@ -137,12 +137,7 @@ public class CTextos extends Mecanica implements Imecanica{
                             .create().show();
 
                 } else {
-                    if (getEstado()==0){
-                        Toast.makeText(context.getApplicationContext(), R.string.nao_pode_realizar_mec, Toast.LENGTH_LONG).show();
-                    }
-                    if (getEstado()==3){
-                        Toast.makeText(context.getApplicationContext(), R.string.sem_permissao_para_realizar_mecanica, Toast.LENGTH_LONG).show();
-                    }
+                    mostarToastFeedback(context);
                 }
             }
         }.execute();

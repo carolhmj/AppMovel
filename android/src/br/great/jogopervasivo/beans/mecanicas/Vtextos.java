@@ -4,19 +4,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import br.ufc.great.arviewer.android.R;
 import br.great.jogopervasivo.actvititesDoJogo.TelaPrincipalActivity;
 import br.great.jogopervasivo.beans.Mecanica;
-import br.great.jogopervasivo.util.Constantes;
 import br.great.jogopervasivo.util.InformacoesTemporarias;
-import br.great.jogopervasivo.webServices.Servidor;
+import br.ufc.great.arviewer.android.R;
 
 /**
  * Created by messiaslima on 06/03/2015.
@@ -46,11 +38,11 @@ public class Vtextos extends Mecanica implements Imecanica {
     @Override
     public void realizarMecanica(final TelaPrincipalActivity context) {
 
-        if (getEstado()==2){
+        if (getEstado() == 2) {
             return;
         }
 
-        new AsyncTask<Void,Void,Boolean>(){
+        new AsyncTask<Void, Void, Boolean>() {
             ProgressDialog progressDialog;
 
             @Override
@@ -93,15 +85,15 @@ public class Vtextos extends Mecanica implements Imecanica {
                             .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    confirmarRealizacao(context, null,null,null);
+                                    confirmarRealizacao(context, null, null, null);
                                 }
                             })
                             .setTitle(getNome())
                             .setMessage(getTexto())
                             .create()
                             .show();
-                }else{
-                 mostarToastFeedback(context);
+                } else {
+                    mostarToastFeedback(context);
                 }
             }
         }.execute();

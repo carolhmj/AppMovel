@@ -97,12 +97,7 @@ public class VObj3d extends Mecanica implements Imecanica {
                     TelaPrincipalActivity.mecanicaVObj3dAtual = VObj3d.this;
                     context.startActivityForResult(intent,TelaPrincipalActivity.REQUEST_CODE_VER_OBJ_3D);
                 } else {
-                    if (getEstado() == 0) {
-                        Toast.makeText(context.getApplicationContext(), R.string.nao_pode_realizar_mec, Toast.LENGTH_LONG).show();
-                    }
-                    if (getEstado()==3){
-                        Toast.makeText(context.getApplicationContext(), R.string.sem_permissao_para_realizar_mecanica, Toast.LENGTH_LONG).show();
-                    }
+                    mostarToastFeedback(context);
                 }
             }
         }.execute();

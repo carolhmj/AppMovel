@@ -98,12 +98,7 @@ public class CVideos extends Mecanica implements Imecanica {
                     context.startActivityForResult(intent, TelaPrincipalActivity.REQUEST_CODE_VIDEO);
 
                 } else {
-                    if (getEstado()==0){
-                        Toast.makeText(context.getApplicationContext(), R.string.nao_pode_realizar_mec, Toast.LENGTH_LONG).show();
-                    }
-                    if (getEstado()==3){
-                        Toast.makeText(context.getApplicationContext(), R.string.sem_permissao_para_realizar_mecanica, Toast.LENGTH_LONG).show();
-                    }
+                    mostarToastFeedback(context);
                 }
             }
         }.execute();
