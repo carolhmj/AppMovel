@@ -43,6 +43,7 @@ public class LoginActivity extends Activity {
         return true;
     }
 
+    private static LoginActivity instance =null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         verificarPlayServices();
@@ -115,5 +116,9 @@ public class LoginActivity extends Activity {
             }
         });
         //InformacoesTemporarias.contexto=this;
+        instance = this;
+    }
+    public static LoginActivity getInstance(){
+        return instance;
     }
 }
