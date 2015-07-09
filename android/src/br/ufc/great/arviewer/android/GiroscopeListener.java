@@ -11,6 +11,7 @@ import br.ufc.great.arviewer.ARViewer;
 
 /**
  * Created by messiaslima on 26/06/2015.
+ * @author messiaslima
  */
 public class GiroscopeListener implements SensorEventListener {
 
@@ -23,11 +24,8 @@ public class GiroscopeListener implements SensorEventListener {
         this.arViewer = arViewer;
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-        if (sensor != null) {
-            Toast.makeText(context.getApplicationContext(), "Sensor " + sensor.getName() + " disponivel", Toast.LENGTH_LONG).show();
-
-        } else {
-            Toast.makeText(context.getApplicationContext(), "Sensor nao disponivel", Toast.LENGTH_LONG).show();
+        if (sensor == null) {
+            Toast.makeText(context.getApplicationContext(), "Sensor giroscopio nao disponivel", Toast.LENGTH_LONG).show();
         }
     }
     public void startMonitoring(){

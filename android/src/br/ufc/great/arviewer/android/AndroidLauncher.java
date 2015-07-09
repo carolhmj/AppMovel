@@ -1,6 +1,5 @@
 package br.ufc.great.arviewer.android;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +21,7 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
 import java.io.File;
 
+import br.great.jogopervasivo.util.Constantes;
 import br.ufc.great.arviewer.ARViewer;
 import br.ufc.great.arviewer.Resultado;
 
@@ -49,6 +49,7 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
         final Intent intent = getIntent();
         String nome_objeto = intent.getExtras().getString("NOME_OBJETO");
         String nome_textura = intent.getExtras().getString("NOME_TEXTURA");
+
         lat_obj = intent.getExtras().getDouble("LAT_OBJETO");
         lon_obj = intent.getExtras().getDouble("LON_OBJETO");
 
@@ -75,7 +76,7 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
             @Override
             public void run() {
                 setResult(RESULT_OK);
-                Log.e("TAG","Executou a Thread");
+                Log.e("TAG", "Executou a Thread");
                 finish();
             }
         }));

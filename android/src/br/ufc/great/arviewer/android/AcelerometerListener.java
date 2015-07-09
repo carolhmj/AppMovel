@@ -23,11 +23,8 @@ public class AcelerometerListener implements SensorEventListener {
         this.arViewer = arViewer;
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        if (sensor != null) {
-            Toast.makeText(context.getApplicationContext(), "Sensor " + sensor.getName() + " disponivel", Toast.LENGTH_LONG).show();
-
-        } else {
-            Toast.makeText(context.getApplicationContext(), "Sensor nao disponivel", Toast.LENGTH_LONG).show();
+        if (sensor == null) {
+            Toast.makeText(context.getApplicationContext(), "Sensor acelerômetro nao disponivel", Toast.LENGTH_LONG).show();
         }
     }
 
