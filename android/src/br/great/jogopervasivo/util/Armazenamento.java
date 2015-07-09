@@ -27,10 +27,10 @@ public class Armazenamento {
         }
         return ip;
     }
-    public static String resgatarPorta(Context context){
-        String porta =  resgatarString(ConfiguracoesActivity.TAG_CONFIGURACAO_IP,context);
-        if (porta.trim().length()==0){
-            return "8083";
+    public static int resgatarPorta(Context context){
+        int porta =  resgatarInt(ConfiguracoesActivity.TAG_CONFIGURACAO_PORTA,context);
+        if (porta==-1){
+            return 8083;
         }
         return porta;
     }
