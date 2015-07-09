@@ -306,6 +306,7 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
         Thread threadLocalizacao = new Thread(new AtualizarLocalizacaoJogadores(this));
         threadLocalizacao.start();
 
+        instance = this;
     }
 
     /**
@@ -613,6 +614,10 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
 
     @Override
     public void onBackPressed() {
+        voltar();
+    }
+
+    public void voltar() {
         if (Armazenamento.resgatarBoolean(Constantes.JOGO_EXECUTANDO, this)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.app_name);
@@ -629,6 +634,12 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
         } else {
             finish();
         }
+    }
+
+    private static TelaPrincipalActivity instance = null;
+
+    public static TelaPrincipalActivity getInstance() {
+        return instance;
     }
 
     @Override

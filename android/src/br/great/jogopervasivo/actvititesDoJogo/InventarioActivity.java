@@ -139,4 +139,12 @@ public class InventarioActivity extends Activity {
     public static InventarioActivity getInstace() {
         return instance;
     }
+
+    @Override
+    public void onBackPressed() {
+        TelaPrincipalActivity instance = TelaPrincipalActivity.getInstance();
+        if (instance != null) {
+            instance.voltar();
+        }
+    }
 }

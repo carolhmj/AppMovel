@@ -3,6 +3,7 @@ package br.great.jogopervasivo.beans;
 import android.content.Context;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -315,5 +316,26 @@ public class Mecanica {
             return null;
         }
         return null;
+    }
+
+    public boolean verificarAutorizacaoDaMecanica(){
+        JSONObject acao = new JSONObject();
+        JSONObject mecanica = new JSONObject();
+        JSONArray requisiscao = new JSONArray();
+        try {
+            acao.put("acao", 107);
+            mecanica.put("jogo_id", InformacoesTemporarias.jogoAtual.getId());
+            mecanica.put("grupo_id", InformacoesTemporarias.grupoAtual.getId());
+            mecanica.put("mecanica_id", getId());
+            mecanica.put("jogador_id", InformacoesTemporarias.idJogador);
+            requisiscao.put(0, acao);
+            requisiscao.put(1, mecanica);
+            JSONObject resposta = new JSONArray(Servidor.fazerGet(requisiscao.toString())).getJSONObject(0);
+            return resposta.getInt("result") != 0;
+        } catch (JSONException je) {
+            Log.e(Constantes.TAG, "erro no json " + je.getMessage());
+            je.printStackTrace();
+            return false;
+        }
     }
 }

@@ -11,13 +11,13 @@ import android.view.MenuItem;
 import android.widget.TabHost;
 import android.widget.Toast;
 
-import br.ufc.great.arviewer.android.R;
 import br.great.jogopervasivo.arrayAdapters.ListarMissoesAdapter;
 import br.great.jogopervasivo.beans.Mecanica;
 import br.great.jogopervasivo.beans.Missao;
 import br.great.jogopervasivo.util.Armazenamento;
 import br.great.jogopervasivo.util.Constantes;
 import br.great.jogopervasivo.util.InformacoesTemporarias;
+import br.ufc.great.arviewer.android.R;
 
 public class TabHostActivity extends TabActivity {
     TabHost tabHost;
@@ -146,5 +146,6 @@ public class TabHostActivity extends TabActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 
 }

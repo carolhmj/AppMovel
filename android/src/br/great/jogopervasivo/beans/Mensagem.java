@@ -2,6 +2,7 @@ package br.great.jogopervasivo.beans;
 
 /**
  * Created by messiaslima on 07/04/2015.
+ * @author messiaslima
  */
 public class Mensagem {
     private String autor, message;

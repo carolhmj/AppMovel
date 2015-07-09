@@ -11,10 +11,10 @@ import br.great.jogopervasivo.actvititesDoJogo.ConfiguracoesActivity;
  */
 public class Constantes {
 
-    public static final String SERVIDOR_DE_APLICACAO = "http://200.129.43.207:8083/WebServidor/webresources";
+    //public static final String SERVIDOR_DE_APLICACAO = "http://200.129.43.207:8083/WebServidor/webresources";
     public static final String SERVIDOR_DE_ARQUIVOS = "http://200.129.43.207/pervasivedb/";
 
-    //public static final String SERVIDOR_DE_APLICACAO = "http://192.168.0.48:8080/WebServidor/webresources";
+    public static final String SERVIDOR_DE_APLICACAO = "http://192.168.0.72:8080/WebServidor/webresources";
     //public static final String SERVIDOR_DE_ARQUIVOS = "http://192.168.0.48/pervasivebd/img/";
 
     //static String ip = Armazenamento.resgatarString(ConfiguracoesActivity.TAG_CONFIGURACAO_IP, InformacoesTemporarias.contexto);

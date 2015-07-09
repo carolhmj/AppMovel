@@ -73,7 +73,7 @@ public class CSons extends Mecanica implements Imecanica {
 
             @Override
             protected Boolean doInBackground(Void... params) {
-                JSONObject acao = new JSONObject();
+           /*     JSONObject acao = new JSONObject();
                 JSONObject mecanica = new JSONObject();
                 JSONArray requisiscao = new JSONArray();
                 try {
@@ -90,7 +90,9 @@ public class CSons extends Mecanica implements Imecanica {
                     Log.e(Constantes.TAG, "erro no json " + je.getMessage());
                     je.printStackTrace();
                     return false;
-                }
+                }*/
+
+                return verificarAutorizacaoDaMecanica();
             }
 
 

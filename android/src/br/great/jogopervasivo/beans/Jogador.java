@@ -103,6 +103,7 @@ public class Jogador {
                 try {
                     jsonObjectReq.put("acao", 111);
                     jsonObject1Req.put("jogo_id", InformacoesTemporarias.jogoAtual.getId());
+                    jsonObject1Req.put("grupo_id",InformacoesTemporarias.grupoAtual.getId());
                     jsonObject1Req.put("jogador_id", InformacoesTemporarias.idJogador);
                     jsonObject2Req.put("jogadorcapturado_id", getId());
                     jsonArrayReq.put(0, jsonObjectReq);
