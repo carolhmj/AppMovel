@@ -11,7 +11,7 @@ import java.io.IOException;
 import br.great.jogopervasivo.download.DownloadImagem;
 import br.great.jogopervasivo.download.DownloadObj;
 import br.great.jogopervasivo.download.DownloadSom;
-import br.great.jogopervasivo.download.DownloadTexturaPNG;
+import br.great.jogopervasivo.download.DownloadTexturaPNG2;
 import br.great.jogopervasivo.download.DownloadVideo;
 import br.great.jogopervasivo.util.Constantes;
 import br.great.jogopervasivo.util.InformacoesTemporarias;
@@ -151,7 +151,7 @@ public class Arquivo {
                 break;
             case Constantes.TIPO_MECANICA_V_OBJ_3D:
                 DownloadObj downloadObj = new DownloadObj(getArquivo());
-                DownloadTexturaPNG downloadTexturaPNG = new DownloadTexturaPNG(getTextura());
+                DownloadTexturaPNG2 downloadTexturaPNG = new DownloadTexturaPNG2(getTextura());
                 try {
                     File obj = downloadObj.downloadObjSincrono();
                     File textura = downloadTexturaPNG.downloadTexturaSincrono();
