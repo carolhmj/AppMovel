@@ -61,6 +61,7 @@ public class GcmIntentService extends IntentService {
                         }
                         if (tipoAcao.equals("apresMensagem")) {
                             InformacoesTemporarias.mensagem = extras.getString("message");
+                            TelaPrincipalActivity.getInstance().verificarMensagem();
                         }
                         if (tipoAcao.equals("atualizaInventario")) {
                             RecuperarObjetosInventario.recuperar(this);
