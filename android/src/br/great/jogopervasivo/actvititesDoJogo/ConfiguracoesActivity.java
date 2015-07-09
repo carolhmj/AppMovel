@@ -27,13 +27,13 @@ public class ConfiguracoesActivity extends Activity {
         final EditText portaEditText = (EditText) findViewById(R.id.configuracoes_porta);
         Button salvarButton = (Button) findViewById(R.id.configuracoes_salvar);
 
-        ipEditText.setText(Armazenamento.resgatarString(TAG_CONFIGURACAO_IP,this));
-        portaEditText.setText(Armazenamento.resgatarString(TAG_CONFIGURACAO_PORTA,this));
+        ipEditText.setText(Armazenamento.resgatarIP(this));
+        portaEditText.setText(Integer.toString(Armazenamento.resgatarPorta(this)));
         salvarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Armazenamento.salvar(TAG_CONFIGURACAO_IP,ipEditText.getEditableText().toString(),ConfiguracoesActivity.this);
-                Armazenamento.salvar(TAG_CONFIGURACAO_PORTA,portaEditText.getEditableText().toString(),ConfiguracoesActivity.this);
+                Armazenamento.salvar(TAG_CONFIGURACAO_PORTA,Integer.parseInt(portaEditText.getEditableText().toString()),ConfiguracoesActivity.this);
                 finish();
                 Toast.makeText(getApplicationContext(),R.string.OK,Toast.LENGTH_SHORT).show();
             }

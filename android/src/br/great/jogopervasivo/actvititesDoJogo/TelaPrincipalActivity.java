@@ -492,12 +492,19 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
      */
     public void verificarMensagem() {
         if (InformacoesTemporarias.mensagem != null) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(TelaPrincipalActivity.this);
-            builder.setTitle(R.string.app_name)
-                    .setMessage(InformacoesTemporarias.mensagem)
-                    .setNeutralButton(R.string.OK, null)
-                    .create().show();
-            InformacoesTemporarias.mensagem = null;
+            Handler h = new Handler(getMainLooper());
+            h.post(new Runnable() {
+                @Override
+                public void run() {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(TelaPrincipalActivity.this);
+                    builder.setTitle(R.string.app_name)
+                            .setMessage(InformacoesTemporarias.mensagem)
+                            .setNeutralButton(R.string.OK, null)
+                            .create().show();
+                    InformacoesTemporarias.mensagem = null;
+                }
+            });
+
         }
     }
 

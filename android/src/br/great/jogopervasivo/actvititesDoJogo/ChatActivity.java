@@ -19,7 +19,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import br.great.jogopervasivo.beans.Mensagem;
 import br.great.jogopervasivo.util.Constantes;
 import br.great.jogopervasivo.util.InformacoesTemporarias;
@@ -28,37 +27,38 @@ import br.ufc.great.arviewer.android.R;
 
 public class ChatActivity extends Activity {
 
-    public static List<Mensagem> todasAsMensagens= new ArrayList<>();
+    public static List<Mensagem> todasAsMensagens = new ArrayList<>();
     private static TextView mensagensTextView;
     public static boolean telaAberta = false;
 
-    public static void limparMensagens(){
-        if(mensagensTextView != null){
+    public static void limparMensagens() {
+        if (mensagensTextView != null) {
             mensagensTextView.setText("");
         }
     }
 
-    public static void receberMensagem(String autor, String mensagem){
+    public static void receberMensagem(String autor, String mensagem) {
         Log.i(Constantes.TAG, "GCM recebido!: Mensagem");
-        Mensagem m = new Mensagem(autor,mensagem);
+        Mensagem m = new Mensagem(autor, mensagem);
         todasAsMensagens.add(m);
-        if(telaAberta){
+        if (telaAberta) {
             plotarMensagens();
         }
     }
 
-    private static void plotarMensagens(){
+    private static void plotarMensagens() {
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
             @Override
             public void run() {
                 limparMensagens();
-                for(Mensagem m : todasAsMensagens){
-                    mensagensTextView.append("\n "+m.getAuthor()+" : "+m.getMessage() +"\n -----");
+                for (Mensagem m : todasAsMensagens) {
+                    mensagensTextView.append("\n " + m.getAuthor() + " : " + m.getMessage() + "\n -----");
                 }
             }
         });
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +93,7 @@ public class ChatActivity extends Activity {
                             mecanica.put("jogo_id", InformacoesTemporarias.jogoAtual.getId());
                             mecanica.put("grupo_id", InformacoesTemporarias.grupoAtual.getId());
                             mecanica.put("jogador_id", InformacoesTemporarias.idJogador);
-                            mecanica.put("mensagem",params[0].replace(" ", "%20"));
+                            mecanica.put("mensagem", params[0].replace(" ", "%20"));
                             requisiscao.put(0, acao);
                             requisiscao.put(1, mecanica);
                         } catch (JSONException je) {
@@ -124,7 +124,9 @@ public class ChatActivity extends Activity {
                     }
                 };
 
-                sendMessage.execute(editTextMensagem.getEditableText().toString());
+                if (!editTextMensagem.getEditableText().toString().isEmpty()) {
+                    sendMessage.execute(editTextMensagem.getEditableText().toString());
+                }
             }
         });
     }
@@ -146,12 +148,12 @@ public class ChatActivity extends Activity {
     @Override
     protected void onStop() {
         super.onStop();
-        telaAberta=false;
+        telaAberta = false;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        telaAberta=false;
+        telaAberta = false;
     }
 }
