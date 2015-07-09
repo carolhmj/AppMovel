@@ -14,10 +14,12 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import br.ufc.great.arviewer.android.R;
+import br.great.jogopervasivo.LoginActivity;
 import br.great.jogopervasivo.gcmUtil.InicializarGCM;
+import br.great.jogopervasivo.util.Armazenamento;
 import br.great.jogopervasivo.util.Constantes;
 import br.great.jogopervasivo.util.InformacoesTemporarias;
+import br.ufc.great.arviewer.android.R;
 
 /**
  * Created by messiaslima on 02/02/2015.
@@ -34,10 +36,11 @@ public class Servidor {
      * @return reposta do servidor
      */
     public static String fazerGet(String json) {
-        String uri = "/Servidor/getJogo?json=";
+        String uri = "/WebServidor/webresources/Servidor/getJogo?json=";
         String resultado = "";
         try {
-            URL url = new URL(Constantes.SERVIDOR_DE_APLICACAO + uri + json);
+            //URL url = new URL(Constantes.SERVIDOR_DE_APLICACAO + uri + json);
+            URL url = new URL("http", Armazenamento.resgatarIP(LoginActivity.getInstance()), Armazenamento.resgatarPorta(LoginActivity.getInstance()), uri + json);
             Log.i(Constantes.TAG, Constantes.SERVIDOR_DE_APLICACAO + uri + json);
             URLConnection connection = url.openConnection();
             connection.setConnectTimeout(1000 * 10);
@@ -105,7 +108,7 @@ public class Servidor {
                 return gerarResultado(false, contexto.getString(R.string.falha_de_autenticacao));
             } else {
                 InformacoesTemporarias.idJogador = jsonObject.optInt("id");
-                InformacoesTemporarias.nomeJogador = jsonObject.optString("email",contexto.getString(R.string.desconhecido));
+                InformacoesTemporarias.nomeJogador = jsonObject.optString("email", contexto.getString(R.string.desconhecido));
                 String idDispositivo = "";
                 idDispositivo = jsonObject.optString("idDispositivo", "");
                 InicializarGCM initGcm = new InicializarGCM(contexto, idDispositivo);
