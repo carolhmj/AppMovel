@@ -86,7 +86,7 @@ public class ObjetoInventario {
         List<Jogador> jogadoresProximos = new ArrayList<>();
         for (Grupo grupo : InformacoesTemporarias.grupos) {
             for (Jogador jogador : grupo.getJogadores()) {
-                if (isProximo(jogador)) {
+                if (isProximo(jogador) && (jogador.getId() != InformacoesTemporarias.idJogador)) {
                     jogadoresProximos.add(jogador);
                 }
             }

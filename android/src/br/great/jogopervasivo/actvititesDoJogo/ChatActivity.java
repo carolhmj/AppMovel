@@ -54,7 +54,7 @@ public class ChatActivity extends Activity {
             public void run() {
                 limparMensagens();
                 for(Mensagem m : todasAsMensagens){
-                    mensagensTextView.append("\n "+m.getMessage());
+                    mensagensTextView.append("\n "+m.getAuthor()+" : "+m.getMessage() +"\n -----");
                 }
             }
         });

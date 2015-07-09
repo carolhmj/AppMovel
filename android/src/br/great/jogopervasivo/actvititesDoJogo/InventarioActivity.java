@@ -2,6 +2,7 @@ package br.great.jogopervasivo.actvititesDoJogo;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,6 +21,7 @@ public class InventarioActivity extends Activity {
     public static final String ITEM_ID = "item_id";
     public static final String ITEM_TIPO = "item_tipo";
     public static final String ITEM_ARQUIVO = "item_arquivo";
+    private static InventarioActivity instance = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +60,15 @@ public class InventarioActivity extends Activity {
             recuperarObjetos();
         }
 
+        instance = this;
+    }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (inventarioArrayAdapter != null) {
+            inventarioArrayAdapter.notifyDataSetChanged();
+        }
     }
 
     public void recuperarObjetos() {
@@ -107,8 +117,26 @@ public class InventarioActivity extends Activity {
         super.onResume();
     }
 
+    InventarioArrayAdapter inventarioArrayAdapter = null;
+
     public void atualizarLista() {
-        InventarioArrayAdapter inventarioArrayAdapter = new InventarioArrayAdapter(this, R.layout.invertario_item_lista, InformacoesTemporarias.inventario);
-        listView.setAdapter(inventarioArrayAdapter);
+        if (inventarioArrayAdapter != null) {
+            inventarioArrayAdapter.notifyDataSetChanged();
+        } else {
+            inventarioArrayAdapter = new InventarioArrayAdapter(this, R.layout.invertario_item_lista, InformacoesTemporarias.inventario);
+            inventarioArrayAdapter.registerDataSetObserver(new DataSetObserver() {
+                @Override
+                public void onChanged() {
+                    inventarioArrayAdapter = new InventarioArrayAdapter(InventarioActivity.this, R.layout.invertario_item_lista, InformacoesTemporarias.inventario);
+                    inventarioArrayAdapter.registerDataSetObserver(this);
+                    listView.setAdapter(inventarioArrayAdapter);
+                }
+            });
+            listView.setAdapter(inventarioArrayAdapter);
+        }
+    }
+
+    public static InventarioActivity getInstace() {
+        return instance;
     }
 }
