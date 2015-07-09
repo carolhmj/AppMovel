@@ -63,10 +63,13 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
     String nomeDoObjeto;
     String nomeDaTextura;
 
-    public ARViewer(File file, String nomeDoObjeto, String nomeDaTextura) {
+    Thread setResultOK;
+
+    public ARViewer(File file, String nomeDoObjeto, String nomeDaTextura, Thread thread) {
         this.objeto = file;
         this.nomeDoObjeto = nomeDoObjeto;
         this.nomeDaTextura = nomeDaTextura;
+        this.setResultOK = thread;
     }
 
     @Override
@@ -106,9 +109,14 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
 
 
     private void doneLoading() {
-        TextureProvider textureProvider = new FileTextureProviderExterna();
-        textureProvider.load("GreatPervasiveGame/" + nomeDaTextura);
+
+        FileTextureProviderExterna textureProvider = new FileTextureProviderExterna();
+        textureProvider.load(nomeDaTextura);
+
+
         Model model = objLoader.loadModel(Gdx.files.external("GreatPervasiveGame/" + nomeDoObjeto), textureProvider);
+        Gdx.app.error("debug",Gdx.files.external("GreatPervasiveGame/" + nomeDoObjeto).path());
+
         String id = model.nodes.get(0).id;
         GameObject gameObject = new GameObject(model, id, true);
         instances.add(gameObject);
@@ -145,8 +153,8 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
         pitch = pitch + alpha * (devPitch - pitch);
         roll = roll + alpha * (devRoll - roll);
 
-//        Vector3 look = new Vector3(giroscopeY, -acelerometerZ, 1);
-//        cam.lookAt(look);
+       //Vector3 look = new Vector3(0, 0, 5);
+        //cam.lookAt(look);
 
 
         cam.position.set(xcam, 0, zcam);// localizacao
@@ -297,14 +305,15 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if (selecting >= 0) {
             if (selecting == getObject(screenX, screenY)) {
+                setResultOK.start();
                 Gdx.app.error("colisao3", "objeto " + selecting);
-                Gdx.app.exit();
             }
             selecting = -1;
             return true;
         }
-        Gdx.app.error("colisao4", "objeto " + selecting);
 
+        Gdx.app.error("colisao4", "objeto " + selecting);
         return false;
     }
 }
+
