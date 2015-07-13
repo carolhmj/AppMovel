@@ -47,7 +47,7 @@ public class Constantes {
     public static final String TIPO_MECANICA_CTEXTOS = "ctextos";
     public static final String TIPO_MECANICA_CVIDEOS = "cvideos";
     public static final String TIPO_MECANICA_DFOTOS = "dfotos";
-    public static final String TIPO_MECANICA_DOBJETOS3D = "dobjetos3d";
+    public static final String TIPO_MECANICA_DOBJETOS3D = "dobjeto3d";
     public static final String TIPO_MECANICA_DSONS = "dsons";
     public static final String TIPO_MECANICA_DVIDEOS = "dvideos";
     public static final String TIPO_MECANICA_DTEXTOS = "dtextos";

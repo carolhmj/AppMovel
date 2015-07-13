@@ -143,7 +143,6 @@ public class SolicitarMissaoAtual extends AsyncTask<Void, Void, Void> {
                             case Constantes.TIPO_MECANICA_DOBJETOS3D:
                                 mecanica = new Deixar();
                                 ((Deixar) mecanica).setTipoObjeto(objetoMecanica.getString("tipoObjeto"));
-
                                 break;
                             case Constantes.TIPO_MECANICA_DSONS:
                                 mecanica = new Deixar();

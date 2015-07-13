@@ -7,8 +7,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
@@ -43,18 +45,21 @@ public class Servidor {
             URL url = new URL("http", Armazenamento.resgatarIP(LoginActivity.getInstance()), Armazenamento.resgatarPorta(LoginActivity.getInstance()), uri + json);
             Log.i(Constantes.TAG, Constantes.SERVIDOR_DE_APLICACAO + uri + json);
             URLConnection connection = url.openConnection();
-            connection.setConnectTimeout(1000 * 10);
+            connection.setConnectTimeout(1000 * 60);
             DataInputStream input = new DataInputStream(connection.getInputStream());
             String linha;
-            while ((linha = input.readLine()) != null) {
-                resultado = resultado + linha;
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(input));
+            StringBuffer newData = new StringBuffer();
+            String s = "";
+            while (null != ((s = bufferedReader.readLine()))) {
+                newData.append(s);
             }
+            resultado = newData.toString();
             input.close();
 
         } catch (MalformedURLException mue) {
             System.err.println("__URL mal formada");
             mue.printStackTrace();
-
         } catch (SocketTimeoutException stoe) {
             System.err.println("__Timeout de conexão");
             stoe.printStackTrace();
