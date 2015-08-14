@@ -8,6 +8,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -112,7 +113,6 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
 
         FileTextureProviderExterna textureProvider = new FileTextureProviderExterna();
         textureProvider.load("GreatPervasiveGame/"+nomeDaTextura);
-
 
         Model model = objLoader.loadModel(Gdx.files.external("GreatPervasiveGame/" + nomeDoObjeto), textureProvider);
         Gdx.app.error("debug",Gdx.files.external("GreatPervasiveGame/" + nomeDoObjeto).path());
