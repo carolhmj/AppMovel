@@ -1,41 +1,75 @@
 package br.great.jogopervasivo.webServices;
 
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.List;
 
 import br.great.jogopervasivo.beans.Arquivo;
-
-import br.great.jogopervasivo.util.Armazenamento;
 import br.great.jogopervasivo.util.Constantes;
+import br.great.jogopervasivo.util.InformacoesTemporarias;
+import br.ufc.great.arviewer.android.R;
 
 /**
  * Created by messiaslima on 11/02/2015.
  *
  * @author messiaslima
- * ainda em desenvolvimento
- *
  */
 public class BaixarArquivosEmBackground extends AsyncTask<Void, Void, Boolean> {
 
-    private int jogo_id, grupo_id;
-    private Double latitude, longitude;
+    List<Arquivo> arquivos;
+    Context context;
 
-
-    public BaixarArquivosEmBackground(int jogo_id, int grupo_id, Double latitude, Double longitude) {
-        this.jogo_id = jogo_id;
-        this.grupo_id = grupo_id;
-        this.latitude = latitude;
-        this.longitude = longitude;
+    public BaixarArquivosEmBackground(List<Arquivo> arquivos, Context context) {
+        this.arquivos = arquivos;
+        this.context = context;
     }
 
 
     @Override
     protected Boolean doInBackground(Void... params) {
-      return null;
+
+        while (true) {
+
+            if (arquivos.size() == 0) {
+                Log.e(Constantes.TAG,"Sem arquivos a serem baixados em background");
+                break;
+            }
+
+            for (Arquivo a : arquivos) {
+                boolean success = false;
+                while (!success) {
+                    success = a.baixar(context);
+                    if (success) {
+                        Log.i(Constantes.TAG,"Tentou baixar arquivo"+ a.getArquivo());
+                        a.setBaixado(true);
+
+                    }
+                    if (!InformacoesTemporarias.conexaoAtiva(context)) {
+                        Log.e(Constantes.TAG,"Sem conexão de rede");
+                        return false;
+                    }
+                }
+            }
+
+            for (Arquivo a : arquivos) {
+                if (a.isBaixado()) {
+                    arquivos.remove(a);
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    protected void onPostExecute(Boolean aBoolean) {
+        if (!aBoolean) {
+            Toast.makeText(context, R.string.falha_de_conexao, Toast.LENGTH_LONG).show();
+        }
+        super.onPostExecute(aBoolean);
+
     }
 }

@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import br.great.jogopervasivo.download.DownloadImagem;
+import br.great.jogopervasivo.download.DownloadMTL;
 import br.great.jogopervasivo.download.DownloadObj;
 import br.great.jogopervasivo.download.DownloadSom;
 import br.great.jogopervasivo.download.DownloadTexturaPNG2;
@@ -27,8 +28,26 @@ public class Arquivo {
     private int mecanica_id;
     private String arquivo;
     private String textura;
+    private String arqmtl;
     private int arquivo_id;
     private int tentativasDownload = 0;
+    private boolean baixado = false;
+
+    public String getArqmtl() {
+        return arqmtl;
+    }
+
+    public void setArqmtl(String arqmtl) {
+        this.arqmtl = arqmtl;
+    }
+
+    public boolean isBaixado() {
+        return baixado;
+    }
+
+    public void setBaixado(boolean baixado) {
+        this.baixado = baixado;
+    }
 
     public String getTipo() {
         return tipo;
@@ -152,9 +171,13 @@ public class Arquivo {
             case Constantes.TIPO_MECANICA_V_OBJ_3D:
                 DownloadObj downloadObj = new DownloadObj(getArquivo());
                 DownloadTexturaPNG2 downloadTexturaPNG = new DownloadTexturaPNG2(getTextura());
+                DownloadMTL downloadMTL = new DownloadMTL(getArqmtl());
+
                 try {
                     File obj = downloadObj.downloadObjSincrono();
                     File textura = downloadTexturaPNG.downloadTexturaSincrono();
+                    File mtl =  downloadMTL.downloadMTLSincrono();
+
                     if (obj == null || textura==null) {
                         if (InformacoesTemporarias.conexaoAtiva(context)) {
                             baixar(context);
@@ -164,6 +187,7 @@ public class Arquivo {
                     } else {
                         salvarNoSistemaDeArquivos(obj);
                         salvarTexturaNoSistemaDeArquivos(textura);
+                        salvarMTLNoSistemaDeArquivos(mtl);
                     }
                 } catch (FileNotFoundException fnfe) {
                     Log.e(Constantes.TAG, "Arquivo não encontrado");
@@ -185,6 +209,9 @@ public class Arquivo {
     }
     public void salvarTexturaNoSistemaDeArquivos(File arquivoASerSalvo) {
         arquivoASerSalvo.renameTo(new File(arquivoASerSalvo.getParent() + "/" + getTextura()));
+    }
+    public void salvarMTLNoSistemaDeArquivos(File arquivoASerSalvo) {
+        arquivoASerSalvo.renameTo(new File(arquivoASerSalvo.getParent() + "/" + getArqmtl()));
     }
     public String getTextura() {
         return textura;

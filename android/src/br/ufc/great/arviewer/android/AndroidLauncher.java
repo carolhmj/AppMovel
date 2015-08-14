@@ -53,6 +53,8 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
         lat_obj = intent.getExtras().getDouble("LAT_OBJETO");
         lon_obj = intent.getExtras().getDouble("LON_OBJETO");
 
+        double lat_jogador = intent.getExtras().getDouble("LAT_JOGADOR");
+        double lon_jogagor = intent.getExtras().getDouble("LON_JOGADOR");
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Aguarde enquando o GPS atualiza a posicao...");
@@ -109,6 +111,10 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, this);
 
+        Location location = new Location(LocationManager.GPS_PROVIDER);
+        location.setLatitude(lat_jogador);
+        location.setLongitude(lon_jogagor);
+        onLocationChanged(location);
     }
 
 

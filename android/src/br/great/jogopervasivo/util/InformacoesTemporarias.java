@@ -150,6 +150,24 @@ public class InformacoesTemporarias {
         return video;
     }
 
+
+    /**
+     * Cria arquivo temporário de textura png
+     *
+     * @return File do arquivo temporário
+     */
+    public static File criarMTLTemporario() {
+        String fileName = "GamePervasivo";
+        String extension = ".mtl";
+        File video = null;
+        try {
+            video = File.createTempFile(fileName, extension, file);
+        } catch (Exception ioe) {
+            Log.e("Debug", ioe.getMessage());
+        }
+        return video;
+    }
+
     /**
      * Cria arquivo temporário de imagem
      *

@@ -1,8 +1,11 @@
 package br.great.jogopervasivo.util;
 
 import android.location.Location;
+import android.os.Environment;
 
 import com.google.android.gms.maps.model.LatLng;
+
+import java.io.File;
 
 /**
  * Created by messiaslima on 12/06/2015.
@@ -35,5 +38,15 @@ public class MetodosUteis {
         int fatorMetros = 6371000;
         double PI = 3.14159265;
         return fatorMetros * Math.acos(Math.cos(PI * (90 - posicaoB.latitude) / 180) * Math.cos((90 - posicaoA.latitude) * PI / 180) + Math.sin((90 - posicaoB.latitude) * PI / 180) * Math.sin((90 - posicaoA.latitude) * PI / 180) * Math.cos((posicaoA.longitude - posicaoB.longitude) * PI / 180));
+    }
+
+    /**
+     * Verifica se o arquivo existe na pasta GreatPervasiveGame
+     *
+     * @param nomeArquivo nome do arquivo para verificar
+     */
+    public static boolean arquivoExiste(String nomeArquivo) {
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/GreatPervasiveGame/" + nomeArquivo);
+        return file.exists();
     }
 }

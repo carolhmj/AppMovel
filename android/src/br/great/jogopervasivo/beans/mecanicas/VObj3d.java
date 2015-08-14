@@ -2,19 +2,12 @@ package br.great.jogopervasivo.beans.mecanicas;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.location.Location;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import br.great.jogopervasivo.actvititesDoJogo.TelaPrincipalActivity;
 import br.great.jogopervasivo.beans.Mecanica;
-import br.great.jogopervasivo.util.Constantes;
-import br.great.jogopervasivo.util.InformacoesTemporarias;
-import br.great.jogopervasivo.webServices.Servidor;
+import br.great.jogopervasivo.util.Armazenamento;
 import br.ufc.great.arviewer.android.AndroidLauncher;
 import br.ufc.great.arviewer.android.R;
 
@@ -94,8 +87,11 @@ public class VObj3d extends Mecanica implements Imecanica {
                     intent.putExtra("NOME_TEXTURA", getArqTextura());
                     intent.putExtra("LAT_OBJETO", getLocalizacao().latitude);
                     intent.putExtra("LON_OBJETO", getLocalizacao().longitude);
+                    Location location = Armazenamento.resgatarUltimaLocalizacao(context);
+                    intent.putExtra("LAT_JOGADOR", location.getLatitude());
+                    intent.putExtra("LON_JOGADOR", location.getLongitude());
                     TelaPrincipalActivity.mecanicaVObj3dAtual = VObj3d.this;
-                    context.startActivityForResult(intent,TelaPrincipalActivity.REQUEST_CODE_VER_OBJ_3D);
+                    context.startActivityForResult(intent, TelaPrincipalActivity.REQUEST_CODE_VER_OBJ_3D);
                 } else {
                     mostarToastFeedback(context);
                 }

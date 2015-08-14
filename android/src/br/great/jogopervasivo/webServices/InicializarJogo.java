@@ -14,13 +14,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.ufc.great.arviewer.android.R;
 import br.great.jogopervasivo.beans.Arquivo;
 import br.great.jogopervasivo.beans.Grupo;
 import br.great.jogopervasivo.beans.InstanciaDeJogo;
 import br.great.jogopervasivo.util.Armazenamento;
 import br.great.jogopervasivo.util.Constantes;
 import br.great.jogopervasivo.util.InformacoesTemporarias;
+import br.ufc.great.arviewer.android.R;
 
 /**
  * Created by messiaslima on 11/02/2015.
@@ -39,8 +39,6 @@ public class InicializarJogo extends AsyncTask<Void, String, Boolean> {
     private String mensagem = "";
 
     /**
-     * Construtor da classe
-     *
      * @param context   contexto da activity que instcia a classe
      * @param grupo     grupo em que o jogador vai entrar
      * @param jogo      instancia do jogo a ser jogado
@@ -127,15 +125,15 @@ public class InicializarJogo extends AsyncTask<Void, String, Boolean> {
         try {
             jsonObjectReq.put("acao", 2);
             jsonObject1Req.put("jogo_id", jogo.getId());
-            jsonObject1Req.put("grupo_id",grupo.getId());
-            jsonObject1Req.put("jogador_id",InformacoesTemporarias.idJogador);
+            jsonObject1Req.put("grupo_id", grupo.getId());
+            jsonObject1Req.put("jogador_id", InformacoesTemporarias.idJogador);
             jsonArrayReq.put(0, jsonObjectReq);
             jsonArrayReq.put(1, jsonObject1Req);
         } catch (JSONException je) {
             je.printStackTrace();
         }
 
-        String resposta = Servidor.fazerGet(jsonArrayReq.toString() );
+        String resposta = Servidor.fazerGet(jsonArrayReq.toString());
         if (resposta.equals("[{\"result\":\"true\"}]")) {
             return true;
         } else {
@@ -154,9 +152,9 @@ public class InicializarJogo extends AsyncTask<Void, String, Boolean> {
         try {
             jsonObjectReq.put("acao", 109);
             jsonObject1Req.put("jogo_id", jogo.getId());
-            jsonObject1Req.put("grupo_id",grupo.getId());
-            jsonObject1Req.put("latitude",latitude);
-            jsonObject1Req.put("longitude",longitude);
+            jsonObject1Req.put("grupo_id", grupo.getId());
+            jsonObject1Req.put("latitude", latitude);
+            jsonObject1Req.put("longitude", longitude);
             jsonArrayReq.put(0, jsonObjectReq);
             jsonArrayReq.put(1, jsonObject1Req);
         } catch (JSONException je) {
@@ -185,6 +183,7 @@ public class InicializarJogo extends AsyncTask<Void, String, Boolean> {
                 arquivo.setTipo(arquivoObject.getString("tipo"));
                 arquivo.setArquivo(arquivoObject.getString("arquivo"));
                 arquivo.setTextura(arquivoObject.optString("textura"));
+                arquivo.setArqmtl(arquivoObject.optString("arqmtl"));
                 arquivos.add(arquivo);
             }
 
@@ -208,6 +207,10 @@ public class InicializarJogo extends AsyncTask<Void, String, Boolean> {
                 }
 
             }
+
+            BaixarArquivosEmBackground baixarArquivosEmBackground = new BaixarArquivosEmBackground(arquivos, context);
+            baixarArquivosEmBackground.execute();
+
             return true;
 
         } catch (JSONException je) {
