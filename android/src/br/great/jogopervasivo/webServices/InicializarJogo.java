@@ -188,10 +188,13 @@ public class InicializarJogo extends AsyncTask<Void, String, Boolean> {
             }
 
             List<Arquivo> arquivosPrioritarios = new ArrayList<>();
+            List<Arquivo> arquivosBackgroung = new ArrayList<>();
 
             for (Arquivo a : arquivos) { //Coloca os arquivos prioritários em um Array diferente
                 if (a.getPrioridade() == 1) {
                     arquivosPrioritarios.add(a);
+                }else{
+                    arquivosBackgroung.add(a);
                 }
             }
 
@@ -208,7 +211,13 @@ public class InicializarJogo extends AsyncTask<Void, String, Boolean> {
 
             }
 
-            BaixarArquivosEmBackground baixarArquivosEmBackground = new BaixarArquivosEmBackground(arquivos, context);
+           /// for (Arquivo a : arquivos) { //Coloca os arquivos prioritários em um Array diferente
+            //    if (a.getPrioridade() == 1) {
+            //        arquivos.remove(a);
+           ///     }
+            //}
+
+            BaixarArquivosEmBackground baixarArquivosEmBackground = new BaixarArquivosEmBackground(arquivosBackgroung, context);
             baixarArquivosEmBackground.execute();
 
             return true;

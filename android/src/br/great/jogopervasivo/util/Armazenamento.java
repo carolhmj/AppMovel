@@ -21,18 +21,28 @@ import br.great.jogopervasivo.actvititesDoJogo.ConfiguracoesActivity;
 public class Armazenamento {
 
     public static String resgatarIP(Context context){
-     String ip =  resgatarString(ConfiguracoesActivity.TAG_CONFIGURACAO_IP,context);
+     String ip =  resgatarString(ConfiguracoesActivity.TAG_CONFIGURACAO_IP, context);
         if (ip.trim().length()==0){
             return "200.129.43.207";
         }
         return ip;
     }
     public static int resgatarPorta(Context context){
-        int porta =  resgatarInt(ConfiguracoesActivity.TAG_CONFIGURACAO_PORTA,context);
+        int porta =  resgatarInt(ConfiguracoesActivity.TAG_CONFIGURACAO_PORTA, context);
         if (porta==-1){
             return 8083;
         }
         return porta;
+    }
+
+
+    public static String resgatarIPArquivos(Context context){
+        String ip =  resgatarString(ConfiguracoesActivity.TAG_CONFIGURACAO_IP_ARQUIVOS, context);
+        if (ip.trim().length()==0){
+            salvar(ConfiguracoesActivity.TAG_CONFIGURACAO_IP_ARQUIVOS,"200.129.43.207",context);
+            return "http://"+resgatarIP(context)+"/pervasivedb/";
+        }
+        return "http://"+ip+"/pervasivedb/";
     }
 
 
@@ -48,8 +58,6 @@ public class Armazenamento {
         editor.putString(Constantes.JOGADOR_LATITUDE, Double.toString(location.getLatitude()));
         editor.putString(Constantes.JOGADOR_LONGITUDE, Double.toString(location.getLongitude()));
         editor.commit();
-
-
     }
 
 

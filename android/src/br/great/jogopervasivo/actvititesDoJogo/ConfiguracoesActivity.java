@@ -16,6 +16,7 @@ import br.ufc.great.arviewer.android.R;
 public class ConfiguracoesActivity extends Activity {
 
     public static final String TAG_CONFIGURACAO_IP = "confIp";
+    public static final String TAG_CONFIGURACAO_IP_ARQUIVOS = "confIpArquivos";
     public static final String TAG_CONFIGURACAO_PORTA = "confPorta";
 
 
@@ -25,15 +26,20 @@ public class ConfiguracoesActivity extends Activity {
         setContentView(R.layout.configuracoes);
         final EditText ipEditText = (EditText) findViewById(R.id.configuracoes_ip);
         final EditText portaEditText = (EditText) findViewById(R.id.configuracoes_porta);
+        final EditText ipEditTextArquivos = (EditText) findViewById(R.id.configuracoes_ipArquivos);
+
         Button salvarButton = (Button) findViewById(R.id.configuracoes_salvar);
 
         ipEditText.setText(Armazenamento.resgatarIP(this));
         portaEditText.setText(Integer.toString(Armazenamento.resgatarPorta(this)));
+        ipEditTextArquivos.setText(Armazenamento.resgatarIPArquivos(this).replace("http://","").replace("/pervasivedb/",""));
+
         salvarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Armazenamento.salvar(TAG_CONFIGURACAO_IP,ipEditText.getEditableText().toString(),ConfiguracoesActivity.this);
                 Armazenamento.salvar(TAG_CONFIGURACAO_PORTA,Integer.parseInt(portaEditText.getEditableText().toString()),ConfiguracoesActivity.this);
+                Armazenamento.salvar(TAG_CONFIGURACAO_IP_ARQUIVOS,ipEditTextArquivos.getEditableText().toString(),ConfiguracoesActivity.this);
                 finish();
                 Toast.makeText(getApplicationContext(),R.string.OK,Toast.LENGTH_SHORT).show();
             }

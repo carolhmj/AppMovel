@@ -4,27 +4,20 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import br.ufc.great.arviewer.android.R;
 import br.great.jogopervasivo.actvititesDoJogo.TelaPrincipalActivity;
 import br.great.jogopervasivo.beans.Mecanica;
-import br.great.jogopervasivo.util.Constantes;
-import br.great.jogopervasivo.util.InformacoesTemporarias;
-import br.great.jogopervasivo.webServices.Servidor;
+import br.ufc.great.arviewer.android.R;
 
 /**
  * Created by messiaslima on 18/03/2015.
+ *
  * @author messiaslima
  */
-public class CTextos extends Mecanica implements Imecanica{
+public class CTextos extends Mecanica implements Imecanica {
     private int idTextos;
     private String texto;
 
@@ -47,7 +40,7 @@ public class CTextos extends Mecanica implements Imecanica{
     @Override
     public void realizarMecanica(final TelaPrincipalActivity context) {
 
-        if (getEstado()==2){
+        if (getEstado() == 2) {
             return;
         }
 
@@ -92,19 +85,18 @@ public class CTextos extends Mecanica implements Imecanica{
             protected void onPostExecute(Boolean aBoolean) {
                 progressDialog.dismiss();
                 if (aBoolean) {
-                    AlertDialog.Builder builder  = new AlertDialog.Builder(context);
-                    View view = context.getLayoutInflater().inflate(R.layout.novo_jogo_layout,null);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    View view = context.getLayoutInflater().inflate(R.layout.novo_jogo_layout, null);
                     final EditText campoDeTexto = (EditText) view.findViewById(R.id.novo_jogo_nome);
                     campoDeTexto.setHint(R.string.digite_texto);
                     builder.setView(view);
                     builder.setTitle(getNome())
-                            .setNegativeButton(R.string.cancelar,null)
+                            .setNegativeButton(R.string.cancelar, null)
                             .setPositiveButton(R.string.enviar, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     new AsyncTask<Void, Void, Boolean>() {
                                         ProgressDialog progressDialog = new ProgressDialog(context);
-
 
                                         @Override
                                         protected void onPreExecute() {
@@ -116,6 +108,11 @@ public class CTextos extends Mecanica implements Imecanica{
 
                                         @Override
                                         protected Boolean doInBackground(Void... params) {
+
+                                            /*Esse método era utilizado na primeira versão do aplicativo
+                                             * Em decorrencia da mudança de logica, O conteudo foi movido para o método
+                                             * Mecanica.confirmarRealização()
+                                             * */
                                             return true;
                                         }
 
@@ -125,11 +122,11 @@ public class CTextos extends Mecanica implements Imecanica{
                                             int mensagem;
                                             if (aBoolean) {
                                                 mensagem = R.string.arquivo_enviado;
-                                                confirmarRealizacao(context,campoDeTexto.getEditableText().toString(),null,null);
+                                                confirmarRealizacao(context, campoDeTexto.getEditableText().toString(), null, null);
                                             } else {
                                                 mensagem = R.string.falha_de_conexao;
                                             }
-                                            Toast.makeText(context.getApplicationContext(),mensagem,Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(context.getApplicationContext(), mensagem, Toast.LENGTH_SHORT).show();
                                         }
                                     }.execute();
                                 }
@@ -141,8 +138,6 @@ public class CTextos extends Mecanica implements Imecanica{
                 }
             }
         }.execute();
-
-
 
 
     }

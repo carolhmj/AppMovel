@@ -100,9 +100,13 @@ public class CSons extends Mecanica implements Imecanica {
             protected void onPostExecute(Boolean aBoolean) {
                 if (aBoolean) {
 
+                    //Infla o layout do gravador
                     View layout = context.getLayoutInflater().inflate(R.layout.record_audio, null);
+
+                    //Cria arquivo temporário
                     final File audioFile = InformacoesTemporarias.criarAudioTemporario();
 
+                    //Configura o gravador de mídia
                     final MediaRecorder recorder = new MediaRecorder();
                     recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                     recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -116,6 +120,8 @@ public class CSons extends Mecanica implements Imecanica {
                     }
 
                     final Button botao = (Button) layout.findViewById(R.id.record_audio_botao);
+
+                    //Adiciona a ação do botão de gravar
                     botao.setOnClickListener(new View.OnClickListener() {
                         boolean gravando = false;
 
@@ -135,6 +141,7 @@ public class CSons extends Mecanica implements Imecanica {
                         }
                     });
 
+                    //Mostra um alert dialog com o layout inflado
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle(getNome());
                     builder.setPositiveButton(R.string.enviar, new DialogInterface.OnClickListener() {

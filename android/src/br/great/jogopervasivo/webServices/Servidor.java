@@ -43,7 +43,7 @@ public class Servidor {
         try {
             //URL url = new URL(Constantes.SERVIDOR_DE_APLICACAO + uri + json);
             URL url = new URL("http", Armazenamento.resgatarIP(LoginActivity.getInstance()), Armazenamento.resgatarPorta(LoginActivity.getInstance()), uri + json);
-            Log.i(Constantes.TAG, Constantes.SERVIDOR_DE_APLICACAO + uri + json);
+            Log.i(Constantes.TAG, Armazenamento.resgatarIP(LoginActivity.getInstance())+":"+Armazenamento.resgatarPorta(LoginActivity.getInstance())+ uri + json);
             URLConnection connection = url.openConnection();
             connection.setConnectTimeout(1000 * 60);
             DataInputStream input = new DataInputStream(connection.getInputStream());

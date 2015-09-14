@@ -14,6 +14,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import br.great.jogopervasivo.LoginActivity;
+import br.great.jogopervasivo.util.Armazenamento;
 import br.great.jogopervasivo.util.Constantes;
 import br.great.jogopervasivo.util.InformacoesTemporarias;
 
@@ -59,8 +61,8 @@ public class DownloadImagem extends AsyncTask<String, Void, Bitmap> {
      */
     public Bitmap downloadImagemSincrono(String imagemNome) throws StackOverflowError, IOException {
 
-        Log.i(Constantes.TAG,"Baixando foto:" + imagemNome+ " em "+ Constantes.SERVIDOR_DE_ARQUIVOS + "cfotos/" + imagemNome);
-        URL url = new URL(Constantes.SERVIDOR_DE_ARQUIVOS + "cfotos/" + imagemNome);
+        Log.i(Constantes.TAG,"Baixando foto:" + imagemNome+ " em "+ Armazenamento.resgatarIPArquivos(LoginActivity.getInstance()) + "cfotos/" + imagemNome);
+        URL url = new URL(Armazenamento.resgatarIPArquivos(LoginActivity.getInstance()) + "cfotos/" + imagemNome);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         InputStream input = connection.getInputStream();
         Bitmap img = BitmapFactory.decodeStream(input);

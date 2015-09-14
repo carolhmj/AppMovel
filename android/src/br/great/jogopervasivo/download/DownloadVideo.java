@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import br.great.jogopervasivo.LoginActivity;
+import br.great.jogopervasivo.util.Armazenamento;
 import br.great.jogopervasivo.util.Constantes;
 import br.great.jogopervasivo.util.InformacoesTemporarias;
 
@@ -30,8 +32,8 @@ public class DownloadVideo extends AsyncTask<Void, Void, File> {
     public File downloadVideoSincrono() throws IOException {
 
         video = InformacoesTemporarias.criarVideoTemporario();
-        Log.i(Constantes.TAG,"Baixando video:" +arquivo+ " em "+ Constantes.SERVIDOR_DE_ARQUIVOS + "cvideos/" + arquivo);
-        URL url = new URL(Constantes.SERVIDOR_DE_ARQUIVOS + "cvideos/" + arquivo);
+        Log.i(Constantes.TAG,"Baixando video:" +arquivo+ " em "+ Armazenamento.resgatarIPArquivos(LoginActivity.getInstance()) + "cvideos/" + arquivo);
+        URL url = new URL(Armazenamento.resgatarIPArquivos(LoginActivity.getInstance()) + "cvideos/" + arquivo);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         InputStream input = connection.getInputStream();
         FileOutputStream fos = new FileOutputStream(video);

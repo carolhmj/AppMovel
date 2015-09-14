@@ -209,6 +209,9 @@ public class Mecanica {
         return getNome();
     }
 
+    /**
+     * manda a confirmação para o servidor que a mecânica foi realizada
+     */
     public void confirmarRealizacao(final Context context, final String nomeDoArquivo, final String tipo, final Integer idMecanicaSimples) {
         tentativas++;
         new AsyncTask<Void, Void, Void>() {
@@ -248,6 +251,11 @@ public class Mecanica {
 
                 String resposta = Servidor.fazerGet(array.toString());
 
+                /*na resposta vem:
+                * O life do jogador  e lista de objetos no inventario
+                * O codigo abaixo o recupera, e define o tipo de acordo com o tipo da mecanica
+                * Por fim, manda executar o método que faz um efeito de "fade out" no marcador
+                */
                 try {
                     JSONObject jsonObject;
                     try {
@@ -292,6 +300,7 @@ public class Mecanica {
                         InformacoesTemporarias.contextoTelaPrincipal.transicaoMarcador(getNome());
                     }
                 } catch (JSONException e) {
+                    //Limita o número de tentativas de conexão, para não entrar em "looping"
                     if (InformacoesTemporarias.conexaoAtiva(context)) {
                         if (tentativas < 10) {
                             confirmarRealizacao(context, nomeDoArquivo, tipo, idMecanicaSimples);
@@ -307,6 +316,12 @@ public class Mecanica {
         }.execute();
     }
 
+    /**
+     * Recupera mecanica pelo nome
+     *
+     * @param nome nome da mecanica a ser recuperada
+     * @return referencia ao pobjeto de mecanica
+     */
     public static Mecanica getMecanica(String nome) {
         try {
             for (Mecanica m : InformacoesTemporarias.mecanicasAtuais) {
@@ -320,6 +335,9 @@ public class Mecanica {
         return null;
     }
 
+    /**
+     * Verifica no servidor, se a mecânica poderá ser realizada pelo jogador nesse momento
+     */
     public boolean verificarAutorizacaoDaMecanica() {
         JSONObject acao = new JSONObject();
         JSONObject mecanica = new JSONObject();

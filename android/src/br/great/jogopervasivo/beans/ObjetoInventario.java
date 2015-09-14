@@ -75,15 +75,26 @@ public class ObjetoInventario {
         return nome;
     }
 
+    /**
+     * Verifica se um jogador está próximo a outro
+     *
+     * @param jogador Objeto que representa o jogador ao qual se deseja compartilhar um objeto
+     * @return boolean se está ou não dentro do limiar de proximidade
+     */
     private boolean isProximo(Jogador jogador) {
         Location locationJogador = MetodosUteis.latLngToLocation(LocationManager.GPS_PROVIDER, jogador.getPosicao());
         double distancia = locationJogador.distanceTo(Armazenamento.resgatarUltimaLocalizacao(InformacoesTemporarias.contextoTelaPrincipal));
         return distancia < Constantes.LIMIAR_DE_PROXIMIDADE;
     }
 
+    /**
+     * Metodo para compartilhar um objeto no inventário
+     */
     public void compartilhar(final Context context) {
-
         List<Jogador> jogadoresProximos = new ArrayList<>();
+
+        /*Recupera a lista de jogadores dos grupos, verifica quais estão dentro do limiar de proximidade
+         * e os coloca em um Array diferente TODO: continuar a comentar */
         for (Grupo grupo : InformacoesTemporarias.grupos) {
             for (Jogador jogador : grupo.getJogadores()) {
                 if (isProximo(jogador) && (jogador.getId() != InformacoesTemporarias.idJogador)) {

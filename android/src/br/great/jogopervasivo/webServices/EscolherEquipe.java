@@ -65,7 +65,6 @@ public class EscolherEquipe extends AsyncTask<Integer, Void, List<Grupo>> {
             JSONArray jsonArray = new JSONArray(resposta).getJSONArray(0);
             List<Grupo> grupos = new ArrayList<>();
 
-
             for (int i = 0; i < jsonArray.length(); i++) {
                 Grupo grupo = new Grupo();
                 JSONObject jsonObject = jsonArray.getJSONObject(i);

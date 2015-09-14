@@ -1,26 +1,16 @@
 package br.great.jogopervasivo.beans.mecanicas;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 
-
 import br.great.jogopervasivo.actvititesDoJogo.TelaPrincipalActivity;
 import br.great.jogopervasivo.beans.Mecanica;
-import br.great.jogopervasivo.util.Constantes;
 import br.great.jogopervasivo.util.InformacoesTemporarias;
-import br.great.jogopervasivo.webServices.Servidor;
 import br.ufc.great.arviewer.android.R;
 
 /**
@@ -33,7 +23,6 @@ public class CFotos extends Mecanica implements Imecanica {
 
     public static String pathDeImagem;
 
-
     public int getIdFotos() {
         return idFotos;
     }
@@ -45,20 +34,19 @@ public class CFotos extends Mecanica implements Imecanica {
     @Override
     public void realizarMecanica(final TelaPrincipalActivity context) {
 
-        if (getEstado()==2){
+        //Caso a mecanica não possa ser realizada
+        if (getEstado() == 2) {
             return;
         }
 
         new AsyncTask<Void, Void, Boolean>() {
             ProgressDialog progressDialog;
 
-
             @Override
             protected void onPreExecute() {
                 progressDialog = new ProgressDialog(context);
                 progressDialog.setCancelable(false);
                 progressDialog.setMessage(context.getString(R.string.obtendo_informacoes));
-
                 super.onPreExecute();
             }
 
@@ -92,14 +80,18 @@ public class CFotos extends Mecanica implements Imecanica {
                 if (aBoolean) {
 
                     InformacoesTemporarias.jogoOcupado = true;
-                    File imagem = InformacoesTemporarias.criarImagemTemporaria();
+                    File imagem = InformacoesTemporarias.criarImagemTemporaria(); //Cria um arquivo temporário de imagem
+
+                    //Coloca o path do arquivo temporário numa variável estática para ser recuperada da Activity principal
                     CFotos.pathDeImagem = imagem.getAbsolutePath();
+
+                    //Chama a intent da camera
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imagem));
                     context.startActivityForResult(intent, TelaPrincipalActivity.REQUEST_CODE_FOTO);
 
                 } else {
-                 mostarToastFeedback(context);
+                    mostarToastFeedback(context);
                 }
             }
         }.execute();

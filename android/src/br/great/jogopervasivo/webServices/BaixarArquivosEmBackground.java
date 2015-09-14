@@ -46,7 +46,6 @@ public class BaixarArquivosEmBackground extends AsyncTask<Void, Void, Boolean> {
                     if (success) {
                         Log.i(Constantes.TAG,"Tentou baixar arquivo"+ a.getArquivo());
                         a.setBaixado(true);
-
                     }
                     if (!InformacoesTemporarias.conexaoAtiva(context)) {
                         Log.e(Constantes.TAG,"Sem conexão de rede");

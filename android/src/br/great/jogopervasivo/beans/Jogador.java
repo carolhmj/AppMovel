@@ -88,6 +88,7 @@ public class Jogador {
         this.nome = nome;
     }
 
+    //Quando um jogador toca no marcador de outro
     public void capturar(final Context context) {
         new AsyncTask<Void, Void, Boolean>() {
 
