@@ -30,6 +30,7 @@ import java.io.File;
 public class ARViewer extends InputAdapter implements ApplicationListener {
     public Environment environment;
     public PerspectiveCamera cam;
+
     public CameraInputController camController;
     public ModelBatch modelBatch;
     public Model model;
