@@ -17,6 +17,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import br.great.jogopervasivo.actvititesDoJogo.TelaPrincipalActivity;
+import br.great.jogopervasivo.util.Armazenamento;
 import br.ufc.great.arviewer.android.R;
 import br.great.jogopervasivo.beans.mecanicas.CFotos;
 import br.great.jogopervasivo.beans.mecanicas.CSons;
@@ -49,7 +51,7 @@ public class UploadDeArquivo {
 
             @Override
             protected Boolean doInBackground(Void... params) {
-                nomeDoArquivo = enviarArquivo(arquivo, "/Servidor/setFoto");
+                nomeDoArquivo = enviarArquivo(arquivo, "/WebServidor/webresources/Servidor/setFoto");
                 if (nomeDoArquivo.equals("")) {
                     return false;
                 }
@@ -96,7 +98,7 @@ public class UploadDeArquivo {
 
             @Override
             protected Boolean doInBackground(Void... params) {
-                nomeDoArquivo = enviarArquivo(arquivo, "/Servidor/setVideo");
+                nomeDoArquivo = enviarArquivo(arquivo, "/WebServidor/webresources/Servidor/setVideo");
                 if (nomeDoArquivo.equals("")) {
                     return false;
                 }
@@ -144,7 +146,7 @@ public class UploadDeArquivo {
 
             @Override
             protected Boolean doInBackground(Void... params) {
-                nomeDoArquivo = enviarArquivo(arquivo, "/Servidor/setSom");
+                nomeDoArquivo = enviarArquivo(arquivo, "/WebServidor/webresources/Servidor/setSom");
                 if (nomeDoArquivo.equals("")) {
                     return false;
                 }
@@ -172,7 +174,8 @@ public class UploadDeArquivo {
 
     private static String enviarArquivo(File arquivo, String uriServico) {
         try {
-            URL url = new URL(Constantes.SERVIDOR_DE_APLICACAO + uriServico);
+
+            URL url = new URL("http://"+Armazenamento.resgatarIP(TelaPrincipalActivity.getInstance())+":"+Armazenamento.resgatarPorta(TelaPrincipalActivity.getInstance())+ uriServico);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(1000 * 10);
             connection.setRequestMethod("POST");
@@ -195,6 +198,7 @@ public class UploadDeArquivo {
             return resultado;
         } catch (MalformedURLException mue) {
             Log.e(Constantes.TAG, "URL mal formada");
+            mue.printStackTrace();
         } catch (IOException ioe) {
             Log.e(Constantes.TAG, "Erro de IO");
             ioe.printStackTrace();
