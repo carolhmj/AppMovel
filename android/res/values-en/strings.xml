@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Jogo Pervasivo</string>
+    <string name="action_settings">Settings</string>
+    <string name="ainda_nao_cadastrado">I don\'t have an account</string>
+    <string name="arquivo_enviado">File uploaded successfully</string>
+    <string name="ativando_gps">Updating GPS location. This may take several minutes in indoor environments. It\'s recommended </string>
+    <string name="ativar">Enable</string>
+    <string name="ativar_conexao">Enable a data connection</string>
+    <string name="audio">Audio</string>
+    <string name="autenticando">Logging</string>
+    <string name="baixando_arquivos">Downloading necessary files</string>
+    <string name="baixando_arquivos_erro">Error downloading files</string>
+    <string name="buscando_jogos">Searching games</string>
+    <string name="buscar">Search games</string>
+    <string name="camera">Camera</string>
+    <string name="cancelar">Cancel</string>
+    <string name="capturou_jogador">Player catched</string>
+    <string name="chat">Team chat</string>
+    <string name="desconhecido">Unknown</string>
+</resources>

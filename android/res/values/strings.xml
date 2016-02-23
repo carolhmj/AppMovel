@@ -13,7 +13,7 @@
     <string name="enviando_arquivo">Enviando arquivo</string>
     <string name="autenticando">Fazendo login</string>
     <string name="title_activity_tela_principal">Jogo Pervasivo</string>
-    <string name="OK">OK</string>
+    <string name="OK" translatable="false">OK</string>
     <string name="mostrar_tudo">Mostrar todas</string>
     <string name="falha_de_conexao">Falha na conexão com o servidor</string>
     <string name="falha_de_autenticacao">Usuário ou senha inválidos</string>
@@ -43,7 +43,7 @@
     <string name="chat">Chat de equipe</string>
     <string name="ver_equipe">Ver equipe</string>
     <string name="sair_do_jogo">Sair do Jogo</string>
-    <string name="ativando_gps">Atualizando posição do GPS. Em ambientes indoor pode demorar um pouco. É recomendado que você va para um local onde pode ver o céu.</string>
+    <string name="ativando_gps">Atualizando posição do GPS. Em ambientes indoor pode demorar um pouco. It is recommended that you go to a place where you can see the sky .</string>
     <string name="eu">Eu</string>
     <string name="buscando_jogos">Buscando jogos</string>
     <string name="buscar">Buscar jogos</string>
