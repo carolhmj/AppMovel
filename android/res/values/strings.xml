@@ -3,7 +3,7 @@
 
     <string name="app_name">Jogo Pervasivo</string>
     <string name="capturou_jogador">Jogador capturado</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world" translatable="false">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="login">Login</string>
     <string name="senha">Senha</string>
@@ -89,7 +89,7 @@
     <string name="reproduzindo">Reproduzindo...</string>
     <string name="title_activity_inventario">InventarioActivity</string>
     <string name="legenda">Legenda</string>
-    <string name="nao_pode_capturar_jogador">Esse jegador não pode ser capturado</string>
+    <string name="nao_pode_capturar_jogador">Esse jogador não pode ser capturado</string>
     <string name="title_activity_configuracoes">ConfiguracoesActivity</string>
     <string name="escolha_jogador_title">Escolha o jogador</string>
     <string name="escolha_jogador_message">Escolha com quem voce vai compartilhar o objeto</string>
