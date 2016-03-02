@@ -18,7 +18,7 @@
     <string name="falha_de_conexao">Falha na conexão com o servidor</string>
     <string name="falha_de_autenticacao">Usuário ou senha inválidos</string>
     <string name="ainda_nao_cadastrado"><u>Ainda não sou cadastrado</u></string>
-    <string name="title_activity_novo_usuario">Cadastrar novo usuário</string>
+    <string name="title_activity_novo_usuario" translatable="false">Cadastrar novo usuário</string>
     <string name="redigite_senha">Digite a senha novamente</string>
     <string name="novo_usuario">Novo usuário</string>
     <string name="verifique_os_campos">Verifique os campos acima</string>
@@ -80,17 +80,17 @@
     <string name="enviando_metadados">Enviando metadados</string>
     <string name="digite_texto">Digite o texto a ser enviado</string>
     <string name="mecanica_nao_liberada">Você deve andar até o local da mecânica.</string>
-    <string name="title_activity_tab_host">@string/app_name</string>
+    <string name="title_activity_tab_host" translatable="false">@string/app_name</string>
     <string name="title_activity_chat">ChatActivity</string>
     <string name="erro_formatacao_dados">Erro na formatação dos dados a serem enviados</string>
     <string name="nao_pode_realizar_mec">Voce não possui pontos/life o suficiente para realizar essas mecânica.</string>
     <string name="objeto_invalido">Escolha um objeto que corresponde a ação</string>
     <string name="reproduzir">Reproduzir</string>
     <string name="reproduzindo">Reproduzindo...</string>
-    <string name="title_activity_inventario">InventarioActivity</string>
+    <string name="title_activity_inventario" translatable="false">InventarioActivity</string>
     <string name="legenda">Legenda</string>
     <string name="nao_pode_capturar_jogador">Esse jogador não pode ser capturado</string>
-    <string name="title_activity_configuracoes">ConfiguracoesActivity</string>
+    <string name="title_activity_configuracoes" translatable="false">ConfiguracoesActivity</string>
     <string name="escolha_jogador_title">Escolha o jogador</string>
     <string name="escolha_jogador_message">Escolha com quem voce vai compartilhar o objeto</string>
     <string name="objeto_compaartilhado">Objeto compartilhado com </string>

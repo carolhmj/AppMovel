@@ -130,6 +130,7 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
         }
     }
 
+
     /**
      * Adiciona os marcadores dos outros jogadores no mapa, adversarios ou copanheiros de equipe
      */
