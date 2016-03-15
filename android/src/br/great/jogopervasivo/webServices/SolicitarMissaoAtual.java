@@ -103,7 +103,7 @@ public class SolicitarMissaoAtual extends AsyncTask<Void, Void, Void> {
                         switch (objetoMissao.getString("tiposimples")) {
                             case Constantes.TIPO_MECANICA_CTEXTOS:
                                 mecanica = new CTextos();
-                                ((CTextos) mecanica).setTexto(objetoMecanica.getString("texto"));
+                                ((CTextos) mecanica).setTexto(objetoMecanica.optString("texto","<sem texto>"));
                                 ((CTextos) mecanica).setIdTextos(objetoMecanica.getInt("texto_id"));
                                 break;
                             case Constantes.TIPO_MECANICA_CFOTOS:
