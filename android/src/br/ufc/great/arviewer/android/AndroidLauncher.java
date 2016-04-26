@@ -46,6 +46,7 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Recebe os valores da Aplicação principal
         final Intent intent = getIntent();
         String nome_objeto = intent.getExtras().getString("NOME_OBJETO");
         String nome_textura = intent.getExtras().getString("NOME_TEXTURA");
@@ -56,23 +57,30 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
         double lat_jogador = intent.getExtras().getDouble("LAT_JOGADOR");
         double lon_jogagor = intent.getExtras().getDouble("LON_JOGADOR");
 
+        //Loading... (não esta aparecendo por enquanto)
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Aguarde enquando o GPS atualiza a posicao...");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
+        //Configurando as cores
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
+
+        cfg.useAccelerometer = true;
+        cfg.useCompass = true;
+
         cfg.r = 8;
         cfg.g = 8;
         cfg.b = 8;
         cfg.a = 8;
 
-
+        //Caminnho do .OBJ
         File arquivo = new File(Environment.getExternalStorageDirectory() + "/GreatPervasiveGame/" + nome_objeto);
 
         if (arquivo.exists()) {
             Log.e("File", "Existe");
         }
+
 
         arViewer = new ARViewer(arquivo, nome_objeto, nome_textura, new Thread(new Runnable() {
             @Override
@@ -83,6 +91,7 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
             }
         }));
 
+        //Abre o visualizador
         libgdxView = initializeForView(arViewer, cfg);
 
         if (libgdxView instanceof SurfaceView) {
@@ -91,6 +100,7 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
             glView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         }
 
+        //Adiciona o view do visualizador na tela
         FrameLayout frame = (FrameLayout) findViewById(R.id.camera);
         frame.addView(libgdxView);
 
@@ -102,15 +112,21 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
             finish();
         }
 
+
+        //Inicia o Listener de acelerômetro
         AcelerometerListener acelerometerListener = new AcelerometerListener(this, arViewer);
         acelerometerListener.startMonitoring();
 
+        //Inicia Listener de Giroscópio
         GiroscopeListener giroscopeListener = new GiroscopeListener(this, arViewer);
         giroscopeListener.startMonitoring();
 
+        // Inicia listener de GPS
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, this);
 
+        //Seta a posição recebida pela aplicação principal
+        //TODO: tentar integrar as duas partes usando o mesmo listener de GPS
         Location location = new Location(LocationManager.GPS_PROVIDER);
         location.setLatitude(lat_jogador);
         location.setLongitude(lon_jogagor);
