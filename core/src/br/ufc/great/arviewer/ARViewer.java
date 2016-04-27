@@ -108,23 +108,28 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
 
     }
 
+    GameObject gameObject;
 
     private void doneLoading() {
 
         FileTextureProviderExterna textureProvider = new FileTextureProviderExterna();
-        textureProvider.load("GreatPervasiveGame/"+nomeDaTextura);
+        textureProvider.load("GreatPervasiveGame/" + nomeDaTextura);
 
         Model model = objLoader.loadModel(Gdx.files.external("GreatPervasiveGame/" + nomeDoObjeto), textureProvider);
-        Gdx.app.error("debug",Gdx.files.external("GreatPervasiveGame/" + nomeDoObjeto).path());
+        Gdx.app.error("debug", Gdx.files.external("GreatPervasiveGame/" + nomeDoObjeto).path());
 
         String id = model.nodes.get(0).id;
-        GameObject gameObject = new GameObject(model, id, true);
+        gameObject = new GameObject(model, id, true);
         instances.add(gameObject);
         loading = false;
     }
 
+    float i = 0;
+
     @Override
     public void render() {
+
+        i += 0.01;
 
         if (loading && assets.update()) {
             doneLoading();
@@ -149,15 +154,14 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
 //        cam.up.y = 1;
 //        cam.up.z = 0;
 
-        azimuth = azimuth + alpha * (devAzimuth - azimuth);
-        pitch = pitch + alpha * (devPitch - pitch);
-        roll = roll + alpha * (devRoll - roll);
+        azimuth = azimuth * alpha + (1 - alpha) * devAzimuth;
+        pitch = pitch * alpha + (1 - alpha) * devPitch;
+        roll = roll * alpha + (1 - alpha) * devRoll;
 
-       //Vector3 look = new Vector3(0, 0, 5);
-        //cam.lookAt(look);
+//        Vector3 look = new Vector3(0, 0, i);
+//        cam.lookAt(look);
 
-
-        cam.position.set(xcam, 0, zcam);// localizacao
+        cam.position.set(0, 0, 5);// O terceiro parametro é a distancia entre um ponto e outro
 
         cam.update();
 
@@ -198,7 +202,12 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
     private float timestamp;
     float EPSILON = 0;
 
+
+
+
+
     public void setGiroscopeValues(float[] values, float eventTimestamp) {
+
 
         if (timestamp != 0) {
             final float dT = (eventTimestamp - timestamp) * NS2S;
@@ -225,13 +234,18 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
             float thetaOverTwo = omegaMagnitude * dT / 2.0f;
             float sinThetaOverTwo = (float) Math.sin(thetaOverTwo);
             float cosThetaOverTwo = (float) Math.cos(thetaOverTwo);
-            deltaRotationVector[0] = sinThetaOverTwo * axisX;
-            deltaRotationVector[1] = sinThetaOverTwo * axisY;
+            deltaRotationVector[0] = (sinThetaOverTwo * axisY) * (-1);
+            deltaRotationVector[1] = (sinThetaOverTwo * axisX);
             deltaRotationVector[2] = sinThetaOverTwo * axisZ;
             deltaRotationVector[3] = cosThetaOverTwo;
 
-            Quaternion quaternion = new Quaternion(deltaRotationVector[0], deltaRotationVector[1], deltaRotationVector[2], deltaRotationVector[3]);
-            cam.rotate(quaternion);
+            // Quaternion quaternionObject = new Quaternion(0, 0, deltaRotationVector[2],0);
+
+            Quaternion quaternionCam = new Quaternion(deltaRotationVector[0], deltaRotationVector[1], 0, deltaRotationVector[3]);
+
+            gameObject.transform.rotate(0, 0, 1, axisZ * (-10));
+
+            cam.rotate(quaternionCam);
         }
 
         timestamp = eventTimestamp;
