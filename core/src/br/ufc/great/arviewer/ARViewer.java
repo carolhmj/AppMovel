@@ -42,7 +42,7 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
     boolean init = true;
     float mina, maxa, minp, maxp, minr, maxr;
     boolean loading;
-    float alpha = 0.01f;
+    float alpha = 0.5f;
     float xcam, zcam;
     double altcam;
     float coordAlpha = 2f;
@@ -201,13 +201,21 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
     private final float[] deltaRotationVector = new float[4];
     private float timestamp;
     float EPSILON = 0;
+    float[] historicValues =  new float[3];
 
+    private float[] lowPassFilter(float[] newValues){
 
+        historicValues[0]  = historicValues[0] * alpha + (1 - alpha) * newValues[0];
+        historicValues[1] = historicValues[1] * alpha + (1 - alpha) * newValues[1];
+        historicValues[2] = historicValues[2] * alpha + (1 - alpha) * newValues[2];
 
+        return historicValues;
+    }
 
 
     public void setGiroscopeValues(float[] values, float eventTimestamp) {
 
+        values = lowPassFilter(values);
 
         if (timestamp != 0) {
             final float dT = (eventTimestamp - timestamp) * NS2S;
