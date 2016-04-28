@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.TextureProvider;
@@ -23,6 +24,7 @@ import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.UBJsonReader;
 
 import java.io.File;
 
@@ -56,9 +58,16 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
 
     //String PASTA_DE_ARQUIVOS = Gdx.files.getExternalStoragePath() + "/GreatPervasiveGame/";
 
+    public static final int TYPE_ANIMATION = 1;
+    public static final int TYPE_STATIC_OBJECT = 0;
+
+
     File objeto;
 
+    private int tipo;
     ObjLoader objLoader;
+    G3dModelLoader g3dModelLoader;
+    ModelInstance modelInstance;
     FileHandle fileHandle;
 
     String nomeDoObjeto;
@@ -66,11 +75,12 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
 
     Thread setResultOK;
 
-    public ARViewer(File file, String nomeDoObjeto, String nomeDaTextura, Thread thread) {
+    public ARViewer(File file, String nomeDoObjeto, String nomeDaTextura, Thread thread, int tipo) {
         this.objeto = file;
         this.nomeDoObjeto = nomeDoObjeto;
         this.nomeDaTextura = nomeDaTextura;
         this.setResultOK = thread;
+        this.tipo = tipo;
     }
 
     @Override
@@ -104,7 +114,12 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
         mina = minp = minr = 999;
         maxa = maxp = maxr = -999;
 
-        objLoader = new ObjLoader();
+        if (tipo == TYPE_ANIMATION) {
+            UBJsonReader ubJsonReader = new UBJsonReader();
+            g3dModelLoader = new G3dModelLoader(ubJsonReader);
+        } else {
+            objLoader = new ObjLoader();
+        }
 
     }
 
@@ -115,12 +130,28 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
         FileTextureProviderExterna textureProvider = new FileTextureProviderExterna();
         textureProvider.load("GreatPervasiveGame/" + nomeDaTextura);
 
-        Model model = objLoader.loadModel(Gdx.files.external("GreatPervasiveGame/" + nomeDoObjeto), textureProvider);
+
+        Model model;
+
+        Gdx.app.error("Nome do Arquivo",Gdx.files.external("GreatPervasiveGame/" + nomeDoObjeto).path());
+
+        if (tipo == TYPE_ANIMATION) {
+            //nomeDoObjeto = "teste3.g3db";
+            model = g3dModelLoader.loadModel(Gdx.files.external("GreatPervasiveGame/" + nomeDoObjeto));
+            modelInstance = new ModelInstance(model);
+        } else {
+            model = objLoader.loadModel(Gdx.files.external("GreatPervasiveGame/" + nomeDoObjeto), textureProvider);
+        }
+
+
         Gdx.app.error("debug", Gdx.files.external("GreatPervasiveGame/" + nomeDoObjeto).path());
 
         String id = model.nodes.get(0).id;
+
         gameObject = new GameObject(model, id, true);
+
         instances.add(gameObject);
+
         loading = false;
     }
 
@@ -158,8 +189,8 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
         pitch = pitch * alpha + (1 - alpha) * devPitch;
         roll = roll * alpha + (1 - alpha) * devRoll;
 
-//        Vector3 look = new Vector3(0, 0, i);
-//        cam.lookAt(look);
+//      Vector3 look = new Vector3(0, 0, i);
+//      cam.lookAt(look);
 
         cam.position.set(0, 0, 5);// O terceiro parametro é a distancia entre um ponto e outro
 
@@ -201,11 +232,11 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
     private final float[] deltaRotationVector = new float[4];
     private float timestamp;
     float EPSILON = 0;
-    float[] historicValues =  new float[3];
+    float[] historicValues = new float[3];
 
-    private float[] lowPassFilter(float[] newValues){
+    private float[] lowPassFilter(float[] newValues) {
 
-        historicValues[0]  = historicValues[0] * alpha + (1 - alpha) * newValues[0];
+        historicValues[0] = historicValues[0] * alpha + (1 - alpha) * newValues[0];
         historicValues[1] = historicValues[1] * alpha + (1 - alpha) * newValues[1];
         historicValues[2] = historicValues[2] * alpha + (1 - alpha) * newValues[2];
 
@@ -254,6 +285,7 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
             gameObject.transform.rotate(0, 0, 1, axisZ * (-10));
 
             cam.rotate(quaternionCam);
+
         }
 
         timestamp = eventTimestamp;
