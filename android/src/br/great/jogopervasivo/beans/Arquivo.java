@@ -101,7 +101,7 @@ public class Arquivo {
                 try {
                     DownloadImagem dImage = new DownloadImagem(null);
                     Bitmap foto;
-                    foto = dImage.downloadImagemSincrono(getArquivo());
+                    foto = dImage.downloadImagemSincrono(getArquivo().replace(" ","%20"));
                     if (foto == null) {
                     /*  Se a conexão estiver ativa, ele tenta baixar de novo até conseguir.
                         O jogo só pode começar se essa imagem estiver baixada.
@@ -169,9 +169,9 @@ public class Arquivo {
                 }
                 break;
             case Constantes.TIPO_MECANICA_V_OBJ_3D:
-                DownloadObj downloadObj = new DownloadObj(getArquivo());
-                DownloadTexturaPNG2 downloadTexturaPNG = new DownloadTexturaPNG2(getTextura());
-                DownloadMTL downloadMTL = new DownloadMTL(getArqmtl());
+                DownloadObj downloadObj = new DownloadObj(getArquivo().replace(" ","%20"));
+                DownloadTexturaPNG2 downloadTexturaPNG = new DownloadTexturaPNG2(getTextura().replace(" ","%20"));
+                DownloadMTL downloadMTL = new DownloadMTL(getArqmtl().replace(" ","%20"));
 
                 try {
                     File obj = downloadObj.downloadObjSincrono();

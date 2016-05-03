@@ -89,7 +89,7 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
                 Log.e("TAG", "Executou a Thread");
                 finish();
             }
-        }));
+        }),ARViewer.TYPE_STATIC_OBJECT);
 
         //Abre o visualizador
         libgdxView = initializeForView(arViewer, cfg);
