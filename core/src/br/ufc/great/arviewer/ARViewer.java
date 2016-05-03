@@ -133,7 +133,7 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
 
         Model model;
 
-        Gdx.app.error("Nome do Arquivo",Gdx.files.external("GreatPervasiveGame/" + nomeDoObjeto).path());
+        Gdx.app.error("Nome do Arquivo", Gdx.files.external("GreatPervasiveGame/" + nomeDoObjeto).path());
 
         if (tipo == TYPE_ANIMATION) {
             //nomeDoObjeto = "teste3.g3db";
@@ -282,7 +282,10 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
 
             Quaternion quaternionCam = new Quaternion(deltaRotationVector[0], deltaRotationVector[1], 0, deltaRotationVector[3]);
 
-            gameObject.transform.rotate(0, 0, 1, axisZ * (-10));
+
+            if (gameObject != null) {
+                gameObject.transform.rotate(0, 0, 1, axisZ * (-10));
+            }
 
             cam.rotate(quaternionCam);
 
