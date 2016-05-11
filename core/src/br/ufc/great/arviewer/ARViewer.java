@@ -156,6 +156,7 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
     }
 
     float i = 0;
+    float distanciaEntreOJogadorEOObjeto;
 
     @Override
     public void render() {
@@ -192,13 +193,20 @@ public class ARViewer extends InputAdapter implements ApplicationListener {
 //      Vector3 look = new Vector3(0, 0, i);
 //      cam.lookAt(look);
 
-        cam.position.set(0, 0, 5);// O terceiro parametro é a distancia entre um ponto e outro
+        cam.position.set(0, 0, distanciaEntreOJogadorEOObjeto);// O terceiro parametro é a distancia entre um ponto e outro
 
         cam.update();
 
 
     }
 
+
+    public void setDistanciaEntreOJogadorEOObjeto(float distanciaEntreOJogadorEOObjeto){
+
+        Gdx.app.error("Distancia de objeto", "Distancia recebida " + distanciaEntreOJogadorEOObjeto );
+
+        this.distanciaEntreOJogadorEOObjeto = distanciaEntreOJogadorEOObjeto;
+    }
 
     public void drawLineOnLogCat() {
         Gdx.app.error("ARViewer", "________________________________________________________");
