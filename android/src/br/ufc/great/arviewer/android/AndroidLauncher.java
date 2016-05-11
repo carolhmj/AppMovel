@@ -21,6 +21,7 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
 import java.io.File;
 
+import br.great.jogopervasivo.actvititesDoJogo.TelaPrincipalActivity;
 import br.great.jogopervasivo.util.Constantes;
 import br.ufc.great.arviewer.ARViewer;
 import br.ufc.great.arviewer.Resultado;
@@ -37,7 +38,7 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
     private ARViewer arViewer;
     ProgressDialog progressDialog;
     LocationManager locationManager;
-
+    Location localizacaoDoObjeto;
     public Resultado clicado = new Resultado(false);
 
 
@@ -54,14 +55,21 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
         lat_obj = intent.getExtras().getDouble("LAT_OBJETO");
         lon_obj = intent.getExtras().getDouble("LON_OBJETO");
 
+        //Localização do objeto
+        localizacaoDoObjeto = new Location(LocationManager.GPS_PROVIDER);
+        localizacaoDoObjeto.setLatitude(lat_obj);
+        localizacaoDoObjeto.setLongitude(lon_obj);
+
         double lat_jogador = intent.getExtras().getDouble("LAT_JOGADOR");
         double lon_jogagor = intent.getExtras().getDouble("LON_JOGADOR");
 
-        //Loading... (não esta aparecendo por enquanto)
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Aguarde enquando o GPS atualiza a posicao...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
+//        //Loading... (não esta aparecendo por enquanto)
+//        progressDialog = new ProgressDialog(this);
+//        progressDialog.setMessage("Aguarde enquando o GPS atualiza a posicao...");
+//        progressDialog.setCancelable(false);
+//        progressDialog.show();
+
+        TelaPrincipalActivity.getInstance().setVisualizadorDeRA(this);
 
         //Configurando as cores
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
@@ -89,7 +97,7 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
                 Log.e("TAG", "Executou a Thread");
                 finish();
             }
-        }),ARViewer.TYPE_STATIC_OBJECT);
+        }), ARViewer.TYPE_STATIC_OBJECT);
 
         //Abre o visualizador
         libgdxView = initializeForView(arViewer, cfg);
@@ -134,13 +142,6 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
     }
 
 
-    public Location newLocation(double lat, double lon) {
-        Location l = new Location(LocationManager.GPS_PROVIDER);
-        l.setLatitude(lat);
-        l.setLongitude(lon);
-        return l;
-    }
-
     /**
      * Check if this device has a camera
      */
@@ -166,30 +167,30 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
     }
 
     public void onLocationChanged(Location location) {
-
-        progressDialog.dismiss();
-
-        Log.e(TAG, "latitude: " + location.getLatitude()
-                + " , longitude: " + location.getLongitude() + " , altitude: "
-                + location.getAltitude());
-
-        float[] dist = new float[1];
-
-        double lat = location.getLatitude();
-        double lon = location.getLongitude();
-
-        Location.distanceBetween(lat, lon, lat_obj, lon_obj, dist);
-        float distance = dist[0];
-        lat = lat_obj - lat;
-        lon = lon_obj - lon;
-        float xcoord = (float) (lat / 0.000009);
-        float zcoord = (float) (lon / 0.000009);
-
-
-        arViewer.setCamCoord(xcoord, zcoord, location.getAltitude());
-        Log.e(TAG, "distance: " + dist[0] + " coordenadas " + xcoord + ", " + zcoord);
-        //Log.e(TAG, "x,y: " + xcoord + " , " + ycoord);
-
+//
+////        progressDialog.dismiss();
+//
+//        Log.e(TAG, "latitude: " + location.getLatitude()
+//                + " , longitude: " + location.getLongitude() + " , altitude: "
+//                + location.getAltitude());
+//
+//        float[] dist = new float[1];
+//
+//        double lat = location.getLatitude();
+//        double lon = location.getLongitude();
+//
+//        Location.distanceBetween(lat, lon, lat_obj, lon_obj, dist);
+//        float distance = dist[0];
+//        lat = lat_obj - lat;
+//        lon = lon_obj - lon;
+//        float xcoord = (float) (lat / 0.000009);
+//        float zcoord = (float) (lon / 0.000009);
+//
+//
+//        arViewer.setCamCoord(xcoord, zcoord, location.getAltitude());
+//        Log.e(TAG, "distance: " + dist[0] + " coordenadas " + xcoord + ", " + zcoord);
+//        //Log.e(TAG, "x,y: " + xcoord + " , " + ycoord);
+        arViewer.setDistanciaEntreOJogadorEOObjeto(location.distanceTo(localizacaoDoObjeto));
     }
 
     @Override
@@ -226,5 +227,6 @@ public class AndroidLauncher extends AndroidApplication implements LocationListe
         locationManager.removeUpdates(this);
         mCamera.stopPreview();
         mCamera.release();
+        TelaPrincipalActivity.getInstance().setVisualizadorDeRA(null);
     }
 }

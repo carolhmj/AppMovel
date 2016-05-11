@@ -61,6 +61,7 @@ import br.great.jogopervasivo.util.MetodosUteis;
 import br.great.jogopervasivo.webServices.AtualizarLocalizacaoJogadores;
 import br.great.jogopervasivo.webServices.SolicitarMissaoAtual;
 import br.great.jogopervasivo.webServices.UploadDeArquivo;
+import br.ufc.great.arviewer.android.AndroidLauncher;
 import br.ufc.great.arviewer.android.R;
 
 public class TelaPrincipalActivity extends Activity implements LocationListener {
@@ -77,6 +78,11 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
     public static VObj3d mecanicaVObj3dAtual = null;
     static ActionBar actionBar;
     boolean pediuMecanicas = false;
+    AndroidLauncher visualizadorDeRA;
+
+    public void setVisualizadorDeRA(AndroidLauncher visualizadorDeRA) {
+        this.visualizadorDeRA = visualizadorDeRA;
+    }
 
     //Constantes locais
     public static final int MARCADOR_LOCAL = 0;
@@ -560,6 +566,9 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
         verificarMensagem();
         adicionarMarcadoresOutrosPlayers();
         verificarMecanicasEscondidas();
+        if(visualizadorDeRA!=null){
+            visualizadorDeRA.onLocationChanged(location);
+        }
     }
 
     private void verificarMecanicasEscondidas() {
