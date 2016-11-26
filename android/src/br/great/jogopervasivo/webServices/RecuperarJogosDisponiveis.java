@@ -14,6 +14,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import br.ufc.great.arviewer.android.R;
 import br.great.jogopervasivo.arrayAdapters.JogosDisponiveisAdapter;
@@ -77,10 +79,18 @@ public class RecuperarJogosDisponiveis extends AsyncTask<String, Void, String> {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 Jogo jogo = new Jogo();
-                jogo.setId(jsonObject.getInt("id"));
-                jogo.setNome(jsonObject.getString("nome"));
-                jogo.setIcone(jsonObject.getString("icone"));
-                jogosDisponiveis.add(jogo);
+                Pattern p = Pattern.compile("\\[CT\\](\\s?\\w*)*");
+                Matcher m = p.matcher(jsonObject.getString("nome"));
+                boolean b = m.matches();
+                if (b) {
+                    Log.d("BuscaJogos", "Game " + jsonObject.getString("nome") + " matched with CT pattern. Has id " + String.valueOf(jsonObject.getInt("id")));
+                    jogo.setId(jsonObject.getInt("id"));
+                    jogo.setNome(jsonObject.getString("nome"));
+                    jogo.setIcone(jsonObject.getString("icone"));
+                    jogosDisponiveis.add(jogo);
+                } else {
+                    Log.d("BuscaJogos", "Game " + jsonObject.getString("nome") + " didn't match with CT pattern. Has id " + String.valueOf(jsonObject.getInt("id")));
+                }
             }
 
 

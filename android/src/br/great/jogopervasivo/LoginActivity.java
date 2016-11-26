@@ -71,17 +71,21 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
                 new AsyncTask<Void, Void, JSONObject>() {
                     ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+                    String loginText;
+                    String senhaText;
 
                     @Override
                     protected void onPreExecute() {
                         progressDialog.setCancelable(false);
                         progressDialog.setMessage(getString(R.string.autenticando));
                         progressDialog.show();
+                        loginText = login.getEditableText().toString().trim();
+                        senhaText = login.getEditableText().toString().trim();
                     }
 
                     @Override
                     protected JSONObject doInBackground(Void... params) {
-                        JSONObject resposta = Servidor.fazerLogin(LoginActivity.this, login.getEditableText().toString(), senha.getEditableText().toString());
+                        JSONObject resposta = Servidor.fazerLogin(LoginActivity.this, loginText, senhaText);
                         return resposta;
                     }
 

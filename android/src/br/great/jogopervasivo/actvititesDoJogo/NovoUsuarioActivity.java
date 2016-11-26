@@ -35,17 +35,21 @@ public class NovoUsuarioActivity extends Activity {
                 if ((login.getEditableText().toString().trim().length() > 0) && (senha.getEditableText().toString().trim().length() > 0) && (senha.getEditableText().toString().equals(senha2.getEditableText().toString()))) {
                     new AsyncTask<Void, Void, JSONObject>() {
                         ProgressDialog progressDialog = new ProgressDialog(NovoUsuarioActivity.this);
+                        String loginText;
+                        String senhaText;
 
                         @Override
                         protected void onPreExecute() {
                             progressDialog.setCancelable(false);
                             progressDialog.setMessage(getString(R.string.enviando_informacoes));
                             progressDialog.show();
+                            loginText = login.getEditableText().toString().trim();
+                            senhaText = senha2.getEditableText().toString().trim();
                         }
 
                         @Override
                         protected JSONObject doInBackground(Void... params) {
-                            return Servidor.cadastrarNovoUsuário(NovoUsuarioActivity.this, login.getEditableText().toString().trim(), senha2.getEditableText().toString().trim());
+                            return Servidor.cadastrarNovoUsuário(NovoUsuarioActivity.this, loginText, senhaText);
                         }
 
                         @Override

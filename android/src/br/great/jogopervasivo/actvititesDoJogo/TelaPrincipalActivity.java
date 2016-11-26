@@ -21,6 +21,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -112,6 +113,8 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
             markerOptions.position(posicao);
             switch (tipo) {
                 case MARCADOR_LOCAL:
+                    //Escondendo os marcadores
+//                    markerOptions.alpha(0);
                     markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marcador_local));
                     break;
                 case MARCADOR_ADVERSARIO:
@@ -127,6 +130,8 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
                     markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_bandeira_azul));
                     break;
                 case MARCADOR_MECANICA_BLOQUEADA:
+                    //Escondendo os marcadores
+//                    markerOptions.alpha(0);
                     markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_marcador_irlocais_rosa));
                     markerOptions.snippet(mensagemBloqueio);
                     break;
@@ -749,4 +754,8 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
             }
         });
     }
+
+//    public void centralizarLocalizacao(View view) {
+//        mapa.
+//    }
 }
