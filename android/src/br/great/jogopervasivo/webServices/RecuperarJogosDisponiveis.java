@@ -82,7 +82,7 @@ public class RecuperarJogosDisponiveis extends AsyncTask<String, Void, String> {
                 Pattern p = Pattern.compile("\\[CT\\](\\s?\\w*)*");
                 Matcher m = p.matcher(jsonObject.getString("nome"));
                 boolean b = m.matches();
-                if (b) {
+                if (true) {
                     Log.d("BuscaJogos", "Game " + jsonObject.getString("nome") + " matched with CT pattern. Has id " + String.valueOf(jsonObject.getInt("id")));
                     jogo.setId(jsonObject.getInt("id"));
                     jogo.setNome(jsonObject.getString("nome"));

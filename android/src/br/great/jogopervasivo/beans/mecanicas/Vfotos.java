@@ -3,7 +3,9 @@ package br.great.jogopervasivo.beans.mecanicas;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +16,8 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.File;
 
 import br.ufc.great.arviewer.android.R;
 import br.great.jogopervasivo.actvititesDoJogo.TelaPrincipalActivity;
@@ -123,6 +127,15 @@ public class Vfotos extends Mecanica implements Imecanica {
             }
         }.execute();
 
+        //Tentando abrir a imagem usando o puzzle
+        Log.d("VFotos", "Call Puzzle");
+        Intent callPuzzle = new Intent("android.puzzletest.PUZZLEACTIVITY");
+        callPuzzle.putExtra("DIFFICULTY", 0);
+        Log.d("VFotos", "image value:" + PASTA_IMAGENS+"/"+ arqImage);
+        Log.d("VFotos", "URI value: " + Uri.fromFile(new File(PASTA_IMAGENS+"/"+ arqImage)).toString());
+        callPuzzle.putExtra("IMAGE", PASTA_IMAGENS+"/"+ arqImage);
+//        callPuzzle.putExtra("IMAGE", Uri.fromFile(new File(PASTA_IMAGENS+"/"+ arqImage)).toString());
+        context.startActivityForResult(callPuzzle, 100);
 
         //Codigo pra abrir imagem direto na galeria
         /*Intent it = new Intent();
