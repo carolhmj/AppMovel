@@ -4,9 +4,12 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,6 +21,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import br.ufc.great.arviewer.android.R;
 import br.great.jogopervasivo.actvititesDoJogo.TelaPrincipalActivity;
@@ -56,6 +62,8 @@ public class Vfotos extends Mecanica implements Imecanica {
     @Override
     public void realizarMecanica(final TelaPrincipalActivity context) {
 
+        final String[] result = new String[1];
+        final Bitmap[] bm = new Bitmap[1];
 
         if (getEstado()==2){
             return;
@@ -108,7 +116,8 @@ public class Vfotos extends Mecanica implements Imecanica {
                     builder.setTitle(getNome());
                     if (arqImage.trim().length() > 0) {
                         ImageView imageView = (ImageView) view.findViewById(R.id.vfotos_imageView);
-                        imageView.setImageBitmap(BitmapFactory.decodeFile(PASTA_IMAGENS+"/"+ arqImage));
+                        bm[0] = BitmapFactory.decodeFile(PASTA_IMAGENS+"/"+ arqImage);
+                        imageView.setImageBitmap(bm[0]);
                     } else {
                         TextView textView = (TextView) view.findViewById(R.id.vfotos_textView);
                         textView.setText(R.string.falha_de_conexao);
@@ -127,13 +136,48 @@ public class Vfotos extends Mecanica implements Imecanica {
             }
         }.execute();
 
+// /        result[0] = MediaStore.Images.Media.insertImage(context.getContentResolver(), bm[0], arqImage, arqImage);
+//        if (result[0] != null) { Log.d("VFotos", result[0]); }
+//        else {Log.d("VFotos", "resultado mediastore foi nulo!");}
+
+        File f = new File(
+                Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_PICTURES
+                ),
+                arqImage
+        );
+
+        bm[0] = BitmapFactory.decodeFile(PASTA_IMAGENS+"/"+ arqImage);
+        if (bm[0] != null) {
+            Log.d("VFotos", "non null bitmap");
+        } else {
+            Log.d("VFotos", "null bitmap");
+        }
+        result[0] = f.getAbsolutePath();
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(f);
+            bm[0].compress(Bitmap.CompressFormat.PNG, 100, out);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         //Tentando abrir a imagem usando o puzzle
         Log.d("VFotos", "Call Puzzle");
         Intent callPuzzle = new Intent("android.puzzletest.PUZZLEACTIVITY");
         callPuzzle.putExtra("DIFFICULTY", 0);
-        Log.d("VFotos", "image value:" + PASTA_IMAGENS+"/"+ arqImage);
-        Log.d("VFotos", "URI value: " + Uri.fromFile(new File(PASTA_IMAGENS+"/"+ arqImage)).toString());
-        callPuzzle.putExtra("IMAGE", PASTA_IMAGENS+"/"+ arqImage);
+//        Log.d("VFotos", "image value:" + PASTA_IMAGENS+"/"+ arqImage);
+        Log.d("VFotos", "image value:" + result[0]);
+//        Log.d("VFotos", "URI value: " + Uri.fromFile(new File(PASTA_IMAGENS+"/"+ arqImage)).toString());
+        callPuzzle.putExtra("IMAGE", result[0]);
 //        callPuzzle.putExtra("IMAGE", Uri.fromFile(new File(PASTA_IMAGENS+"/"+ arqImage)).toString());
         context.startActivityForResult(callPuzzle, 100);
 
