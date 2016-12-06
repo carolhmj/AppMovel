@@ -128,7 +128,7 @@ public class Vfotos extends Mecanica implements Imecanica {
 //                            confirmarRealizacao(context, null,null,null);
                         }
                     });
-                    builder.create().show();
+//                    builder.create().show();
 
                 } else {
                     mostarToastFeedback(context);

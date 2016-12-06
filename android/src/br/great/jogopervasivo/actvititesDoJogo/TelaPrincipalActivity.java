@@ -697,6 +697,7 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
             Toast.makeText(this, "Viu a imagem", Toast.LENGTH_SHORT).show();
             //Confirmar só no resultado ok da activity de puzzle
             if (resultCode == RESULT_OK) {
+                Log.d("onActivityResult", "Confirmar realização chamado aqui!");
                 mecanicaVFotosAtual.confirmarRealizacao(TelaPrincipalActivity.this, null, null, null);
                 mecanicaVFotosAtual = null;
             }
