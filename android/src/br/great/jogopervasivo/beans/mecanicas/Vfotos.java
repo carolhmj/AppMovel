@@ -125,7 +125,7 @@ public class Vfotos extends Mecanica implements Imecanica {
                     builder.setNegativeButton(R.string.OK, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            confirmarRealizacao(context, null,null,null);
+//                            confirmarRealizacao(context, null,null,null);
                         }
                     });
                     builder.create().show();
@@ -135,10 +135,6 @@ public class Vfotos extends Mecanica implements Imecanica {
                 }
             }
         }.execute();
-
-// /        result[0] = MediaStore.Images.Media.insertImage(context.getContentResolver(), bm[0], arqImage, arqImage);
-//        if (result[0] != null) { Log.d("VFotos", result[0]); }
-//        else {Log.d("VFotos", "resultado mediastore foi nulo!");}
 
         File f = new File(
                 Environment.getExternalStoragePublicDirectory(
@@ -179,7 +175,7 @@ public class Vfotos extends Mecanica implements Imecanica {
 //        Log.d("VFotos", "URI value: " + Uri.fromFile(new File(PASTA_IMAGENS+"/"+ arqImage)).toString());
         callPuzzle.putExtra("IMAGE", result[0]);
 //        callPuzzle.putExtra("IMAGE", Uri.fromFile(new File(PASTA_IMAGENS+"/"+ arqImage)).toString());
-        context.startActivityForResult(callPuzzle, 100);
+        context.startActivityForResult(callPuzzle, REQUEST_CODE_VER_IMAGEM);
 
         //Codigo pra abrir imagem direto na galeria
         /*Intent it = new Intent();
@@ -188,4 +184,5 @@ public class Vfotos extends Mecanica implements Imecanica {
         context.startActivityForResult(it, REQUEST_CODE_VER_IMAGEM);
         */
     }
+
 }

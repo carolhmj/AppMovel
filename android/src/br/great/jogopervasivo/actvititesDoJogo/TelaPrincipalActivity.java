@@ -77,6 +77,7 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
     public static Deixar mecanicaDeixarAtual = null;
     public static VVideos mecanicaVVideosAtual = null;
     public static VObj3d mecanicaVObj3dAtual = null;
+    public static Vfotos mecanicaVFotosAtual = null;
     static ActionBar actionBar;
     boolean pediuMecanicas = false;
     AndroidLauncher visualizadorDeRA;
@@ -239,7 +240,8 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
                         ((CVideos) mecanica).realizarMecanica(TelaPrincipalActivity.this);
                         break;
                     case Constantes.TIPO_MECANICA_VFOTOS:
-                        ((Vfotos) mecanica).realizarMecanica(TelaPrincipalActivity.this);
+                        mecanicaVFotosAtual = (Vfotos) mecanica;
+                        mecanicaVFotosAtual.realizarMecanica(TelaPrincipalActivity.this);
                         break;
                     case Constantes.TIPO_MECANICA_VTEXTOS:
                         ((Vtextos) mecanica).realizarMecanica(TelaPrincipalActivity.this);
@@ -693,6 +695,11 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
             }
         } else if (requestCode == Vfotos.REQUEST_CODE_VER_IMAGEM) {
             Toast.makeText(this, "Viu a imagem", Toast.LENGTH_SHORT).show();
+            //Confirmar só no resultado ok da activity de puzzle
+            if (resultCode == RESULT_OK) {
+                mecanicaVFotosAtual.confirmarRealizacao(TelaPrincipalActivity.this, null, null, null);
+                mecanicaVFotosAtual = null;
+            }
         } else if (requestCode == REQUEST_CODE_VER_VIDEO) {
             mecanicaVVideosAtual.confirmarRealizacao(TelaPrincipalActivity.this, null, null, null);
             mecanicaVVideosAtual = null;
