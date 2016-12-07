@@ -669,6 +669,7 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.e("TAG", "Executou onActivityResult");
+        Log.d("Request code", String.valueOf(requestCode));
         if (resultCode == Activity.RESULT_OK) {
 
             if (requestCode == REQUEST_CODE_FOTO) {
@@ -692,11 +693,9 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
             } else if (requestCode == REQUEST_CODE_VER_OBJ_3D) {
                 mecanicaVObj3dAtual.confirmarRealizacao(TelaPrincipalActivity.this, null, null, null);
                 mecanicaVObj3dAtual = null;
-            }
-        } else if (requestCode == Vfotos.REQUEST_CODE_VER_IMAGEM) {
-            Toast.makeText(this, "Viu a imagem", Toast.LENGTH_SHORT).show();
-            //Confirmar só no resultado ok da activity de puzzle
-            if (resultCode == RESULT_OK) {
+            } else if (requestCode == Vfotos.REQUEST_CODE_VER_IMAGEM) {
+                Toast.makeText(this, "Viu a imagem", Toast.LENGTH_SHORT).show();
+                //Confirmar só no resultado ok da activity de puzzle
                 Log.d("onActivityResult", "Confirmar realização chamado aqui!");
                 mecanicaVFotosAtual.confirmarRealizacao(TelaPrincipalActivity.this, null, null, null);
                 mecanicaVFotosAtual = null;
