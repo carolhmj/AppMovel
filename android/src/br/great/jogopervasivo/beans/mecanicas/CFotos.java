@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import java.io.File;
 
@@ -20,6 +21,8 @@ import br.ufc.great.arviewer.android.R;
  */
 public class CFotos extends Mecanica implements Imecanica {
     private int idFotos;
+
+    private static final int REQUEST_CODE = 1;
 
     public static String pathDeImagem;
 
@@ -80,15 +83,15 @@ public class CFotos extends Mecanica implements Imecanica {
                 if (aBoolean) {
 
                     InformacoesTemporarias.jogoOcupado = true;
-                    File imagem = InformacoesTemporarias.criarImagemTemporaria(); //Cria um arquivo temporário de imagem
+                    //File imagem = InformacoesTemporarias.criarImagemTemporaria(); //Cria um arquivo temporário de imagem
 
                     //Coloca o path do arquivo temporário numa variável estática para ser recuperada da Activity principal
-                    CFotos.pathDeImagem = imagem.getAbsolutePath();
+                    //CFotos.pathDeImagem = imagem.getAbsolutePath();
 
                     //Chama a intent da camera
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imagem));
-                    context.startActivityForResult(intent, TelaPrincipalActivity.REQUEST_CODE_FOTO);
+                    //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    //intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imagem));
+                    //context.startActivityForResult(intent, TelaPrincipalActivity.REQUEST_CODE_FOTO);
 
                 } else {
                     mostarToastFeedback(context);
@@ -96,6 +99,10 @@ public class CFotos extends Mecanica implements Imecanica {
             }
         }.execute();
 
+        Log.d("VFotos", "Call MathPuzzle");
+        Intent callPuzzle = new Intent("compubi.mathpuzzle.PUZZLEACTIVITY");
+        callPuzzle.putExtra("DIFFICULTY", 0);
+        context.startActivityForResult(callPuzzle, REQUEST_CODE);
 
     }
 }

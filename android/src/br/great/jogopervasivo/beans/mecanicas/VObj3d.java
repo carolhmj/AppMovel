@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import br.great.jogopervasivo.actvititesDoJogo.TelaPrincipalActivity;
 import br.great.jogopervasivo.beans.Mecanica;
