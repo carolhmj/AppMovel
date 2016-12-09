@@ -281,7 +281,7 @@ public class Mecanica {
                                     objetoInventario.setArquivo(objetoJsonObject.getString("arqSom"));
                                     break;
                                 case Constantes.TIPO_MECANICA_CFOTOS:
-                                    objetoInventario.setArquivo(objetoJsonObject.getString("arqimage"));
+                                    //objetoInventario.setArquivo(objetoJsonObject.getString("arqimage"));
                                     break;
                                 case Constantes.TIPO_MECANICA_CTEXTOS:
                                     objetoInventario.setArquivo(objetoJsonObject.getString("texto"));

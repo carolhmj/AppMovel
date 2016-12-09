@@ -673,9 +673,10 @@ public class TelaPrincipalActivity extends Activity implements LocationListener 
         if (resultCode == Activity.RESULT_OK) {
 
             if (requestCode == REQUEST_CODE_FOTO) {
-                Log.i(Constantes.TAG, "Caminho da imagem: " + CFotos.pathDeImagem);
+                //Log.i(Constantes.TAG, "Caminho da imagem: " + CFotos.pathDeImagem);
                 File foto = new File(CFotos.pathDeImagem);
                 UploadDeArquivo.enviarFoto(this, foto, mecanicaCFotoAtual);
+                mecanicaCFotoAtual.confirmarRealizacao(TelaPrincipalActivity.this, null, null, null);
                 mecanicaCFotoAtual = null;
             } else if (requestCode == REQUEST_CODE_VIDEO) {
                 Log.i(Constantes.TAG, "Caminho do Video: ");
